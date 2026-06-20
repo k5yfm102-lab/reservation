@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>オンライン予約 — ホームケアクリニック横浜港南</title>
+  <link rel="icon" type="image/png" href="data:image/png;base64,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">
+  <link rel="apple-touch-icon" href="data:image/png;base64,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">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* カラー変数 */
+    :root {
+      --orange:     #E8722A;
+      --orange-lt:  #FDE8D4;
+      --orange-dk:  #C45A18;
+      --purple:     #7B3F8C;
+      --purple-lt:  #F3EAF6;
+      --purple-dk:  #5C2E6A;
+      --gray-bg:    #F5F5F5;
+      --gray-border:#E0E0E0;
+      --gray-text:  #666666;
+      --text:       #222222;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Hiragino Sans", sans-serif;
+      background: var(--gray-bg); color: var(--text); min-height: 100vh;
+    }
+
+    /* ── ヘッダー ── */
+    .site-header {
+      background: #fff;
+      border-bottom: 3px solid var(--orange);
+      padding: 12px 20px;
+      text-align: center;
+      margin-bottom: 0;
+    }
+    .site-header img { height: 36px; }
+    .site-header-sub {
+      font-size: 12px; color: var(--gray-text); margin-top: 4px; letter-spacing: 0.03em;
+    }
+
+    .page { max-width: 640px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+
+    /* ── クリニック情報カード ── */
+    .clinic-header {
+      background: #fff; border-radius: 12px;
+      border-left: 4px solid var(--orange);
+      padding: 1rem 1.25rem; margin-bottom: 1.25rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .clinic-name { font-size: 15px; font-weight: 700; color: var(--text); }
+    .clinic-sub  { font-size: 11px; color: var(--gray-text); margin-top: 3px; line-height: 1.6; }
+
+    /* ── プログレスバー ── */
+    .progress-bar { display: flex; gap: 4px; margin-bottom: 1.25rem; }
+    .prog-step { flex: 1; height: 4px; border-radius: 2px; background: #ddd; transition: background 0.3s; }
+    .prog-step.active { background: var(--orange); }
+    .prog-step.done   { background: var(--purple); }
+
+    /* ── セクションタイトル ── */
+    .section-title {
+      font-size: 11px; font-weight: 700; color: var(--purple);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 10px; padding-left: 2px;
+    }
+
+    /* ── カード ── */
+    .card {
+      background: #fff; border-radius: 12px;
+      border: 1px solid var(--gray-border);
+      padding: 1.25rem 1.25rem; margin-bottom: 1rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+
+    /* ── 当日予約不可バナー ── */
+    .today-notice {
+      background: #FFF8F0; border: 1px solid #FBBF84; border-radius: 8px;
+      padding: 10px 14px; margin-bottom: 14px;
+      font-size: 12px; color: #7A3A0A; line-height: 1.7;
+    }
+    .today-notice strong { font-weight: 700; color: var(--orange-dk); }
+
+    /* ── カレンダー ── */
+    .calendar-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;
+    }
+    .cal-nav {
+      background: var(--purple-lt); border: 1px solid #D8C0E0; border-radius: 20px;
+      padding: 5px 16px; cursor: pointer; font-size: 12px; font-weight: 600;
+      color: var(--purple); font-family: inherit; transition: all 0.15s;
+    }
+    .cal-nav:hover { background: var(--purple); color: #fff; }
+    .cal-month { font-size: 15px; font-weight: 700; color: var(--text); }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; text-align: center; }
+    .cal-day-label { font-size: 10px; font-weight: 600; color: var(--gray-text); padding: 4px 0; }
+    .cal-day {
+      padding: 8px 2px; border-radius: 8px; font-size: 13px; cursor: pointer;
+      color: var(--text); border: 1px solid transparent; position: relative; transition: all 0.12s;
+    }
+    .cal-day:hover:not(.disabled):not(.empty) { background: var(--orange-lt); }
+    .cal-day.disabled { color: #ccc; cursor: not-allowed; }
+    .cal-day.empty    { cursor: default; }
+    .cal-day.selected { background: var(--orange); color: #fff; font-weight: 700; border-color: var(--orange); }
+    .cal-day.today:not(.selected) { border-color: var(--orange); color: var(--orange); font-weight: 700; }
+    .cal-day.has-slot:not(.disabled):not(.selected)::after {
+      content: ''; display: block; width: 4px; height: 4px;
+      background: var(--orange); border-radius: 50%; margin: 2px auto 0;
+    }
+
+    /* ── 時間枠 ── */
+    .time-section { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid #f0f0f0; display: none; }
+    .time-label   { font-size: 12px; font-weight: 700; color: var(--purple); margin-bottom: 10px; }
+    .time-grid    { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .time-btn {
+      padding: 10px 2px; border-radius: 8px; border: 1px solid var(--gray-border);
+      background: #fff; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text);
+      text-align: center; transition: all 0.12s; font-family: inherit; line-height: 1.4;
+    }
+    .time-btn:hover:not(:disabled) { background: var(--orange-lt); border-color: var(--orange); color: var(--orange-dk); }
+    .time-btn.selected { border: 2px solid var(--orange); background: var(--orange-lt); color: var(--orange-dk); font-weight: 700; }
+    .time-btn.full     { color: #ccc; background: #fafafa; cursor: not-allowed; font-size: 11px; }
+
+    /* ── フォーム ── */
+    .form-row   { margin-bottom: 16px; }
+    .form-label { font-size: 12px; font-weight: 600; color: var(--gray-text); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .badge-req  { font-size: 10px; background: #FCEBEB; color: #A32D2D; padding: 1px 7px; border-radius: 10px; font-weight: 600; }
+    .badge-opt  { font-size: 10px; background: #f3f4f6; color: #9ca3af; padding: 1px 7px; border-radius: 10px; }
+    input[type=text], input[type=tel], input[type=date], select, textarea {
+      width: 100%; padding: 11px 13px; border: 1px solid var(--gray-border); border-radius: 8px;
+      font-size: 14px; font-family: inherit; background: #fff; color: var(--text);
+      transition: border-color 0.15s, box-shadow 0.15s; appearance: auto;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,114,42,0.12);
+    }
+    textarea { resize: vertical; line-height: 1.6; }
+    .hint { font-size: 11px; color: #9ca3af; margin-top: 5px; line-height: 1.6; }
+
+    /* ── 受診歴ボタン ── */
+    .visit-history-row { display: flex; gap: 10px; }
+    .visit-history-btn {
+      flex: 1; padding: 11px; border-radius: 8px; border: 1px solid var(--gray-border);
+      background: #fff; font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
+      color: var(--text); transition: all 0.15s; text-align: center;
+    }
+    .visit-history-btn.selected {
+      border: 2px solid var(--purple); background: var(--purple-lt);
+      color: var(--purple-dk); font-weight: 700;
+    }
+
+    /* ── 確認カード ── */
+    .confirm-card {
+      background: var(--purple-lt); border: 1px solid #D8C0E0;
+      border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem;
+    }
+    .confirm-row  { display: flex; justify-content: space-between; align-items: flex-start; padding: 9px 0; font-size: 14px; }
+    .confirm-row:not(:last-child) { border-bottom: 1px solid #D8C0E0; }
+    .confirm-label { color: var(--purple); font-size: 12px; font-weight: 600; flex-shrink: 0; }
+    .confirm-val   { font-weight: 600; color: var(--purple-dk); max-width: 65%; text-align: right; word-break: break-all; white-space: pre-wrap; }
+
+    /* ── ボタン ── */
+    .submit-btn {
+      width: 100%; padding: 14px; background: var(--orange); color: #fff; border: none;
+      border-radius: 25px; font-size: 15px; font-weight: 700; cursor: pointer;
+      font-family: inherit; transition: background 0.15s; letter-spacing: 0.03em;
+    }
+    .submit-btn:hover  { background: var(--orange-dk); }
+    .submit-btn.muted  { background: #ddd; color: #999; cursor: default; }
+    .back-btn {
+      width: 100%; padding: 11px; background: none; color: var(--gray-text);
+      border: 1px solid var(--gray-border); border-radius: 25px; font-size: 13px;
+      cursor: pointer; font-family: inherit; margin-top: 10px; transition: all 0.15s;
+    }
+    .back-btn:hover { background: #f3f4f6; color: var(--text); }
+    .notice { font-size: 12px; color: #9ca3af; margin-top: 12px; text-align: center; line-height: 1.7; }
+
+    /* ── 完了画面 ── */
+    .success-card  {
+      background: #fff; border: 2px solid var(--orange); border-radius: 16px;
+      padding: 2rem 1.5rem; text-align: center; display: none;
+      box-shadow: 0 2px 12px rgba(232,114,42,0.15);
+    }
+    .success-icon  { font-size: 44px; margin-bottom: 12px; }
+    .success-title { font-size: 18px; font-weight: 700; color: var(--orange-dk); margin-bottom: 8px; }
+    .success-num   {
+      font-size: 20px; font-weight: 700; color: var(--purple);
+      margin: 14px 0 8px; letter-spacing: 0.06em; background: var(--purple-lt);
+      border-radius: 8px; padding: 10px; border: 1px solid #D8C0E0;
+    }
+    .success-msg   { font-size: 13px; color: var(--gray-text); line-height: 1.9; }
+
+    /* ── 予防接種バナー ── */
+    .vaccine-notice {
+      background: var(--purple-lt); border: 1px solid #D8C0E0; border-radius: 10px;
+      padding: 12px 16px; margin-bottom: 1rem;
+      font-size: 13px; color: var(--purple-dk); line-height: 1.8; text-align: left;
+      font-weight: 600; display: none;
+    }
+
+    .hidden { display: none; }
+
+    /* ── 1ページレイアウト（共通） ── */
+    .progress-bar  { display: none; }
+    .section-title { display: none; }
+    #step2 .card   { margin-top: -0.5rem; }
+
+    @media (max-width: 480px) {
+      .time-grid { grid-template-columns: repeat(4, 1fr); }
+      .site-header img { height: 30px; }
+    }
+  </style>
+</head>
+<body>
+<div class="site-header">
+  <img src="https://www.homecare-cl.jp/assets/img/ci/logo.svg" alt="ホームケアクリニック横浜港南" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+  <div style="display:none;font-size:16px;font-weight:700;color:#E8722A;">ホームケアクリニック横浜港南</div>
+  <div class="site-header-sub">オンライン予約</div>
+</div>
+
+<div id="adminModeBanner" style="display:none;background:var(--purple);color:#fff;text-align:center;padding:8px 12px;font-size:13px;font-weight:700;letter-spacing:0.05em;">
+  🔑 管理者モード
+</div>
+
+<div class="page">
+
+  <div class="clinic-header">
+    <div class="clinic-name">診療時間のご案内</div>
+    <div class="clinic-sub" id="notice-time1"></div>
+    <div class="clinic-sub" id="notice-time2"></div>
+    <div class="clinic-sub" id="notice-link-row" style="margin-top:5px;display:none;">
+      <span id="notice-text"></span>
+      <a id="notice-link" href="#" target="_blank" style="color:var(--orange);text-decoration:underline;"></a>
+    </div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="prog-step active" id="p1"></div>
+    <div class="prog-step" id="p2"></div>
+    <div class="prog-step" id="p3"></div>
+  </div>
+
+  <!-- Step 1 -->
+  <div id="step1">
+    <div class="section-title">step 1 — 受診内容と日時を選択</div>
+    <div class="card">
+      <div class="form-row" style="margin-bottom:16px;">
+        <div class="form-label">受診の種別 <span class="badge-req">必須</span></div>
+        <select id="visitKind" onchange="onVisitKindChange()" style="width:100%;padding:10px 13px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:#111;">
+          <option value="">選択してください</option>
+          <option value="general">通常診療</option>
+          <option value="checkup">健康診断・検診</option>
+          <option value="vaccine_flu">予防接種（インフルエンザ・新型コロナワクチン）</option>
+          <option value="vaccine_other">予防接種（その他ワクチン）</option>
+        </select>
+      </div>
+
+      <!-- 健康診断のみ：検診種類 -->
+      <div class="form-row" style="display:none;" id="checkupTypeRow">
+        <div class="form-label">検診の種類 <span class="badge-req">必須</span></div>
+        <select id="checkupType" onchange="onPurposeChange()" style="width:100%;padding:10px 13px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:#111;">
+          <option value="">選択してください</option>
+          <option value="雇い入れ時検診">雇い入れ時検診</option>
+          <option value="施設入所前検診">施設入所前検診</option>
+          <option value="横浜市特定検診">横浜市特定検診</option>
+          <option value="横浜市がん検診">横浜市がん検診</option>
+          <option value="その他検診">その他検診</option>
+        </select>
+      </div>
+
+      <!-- 予防接種（インフルエンザ・コロナ）のみ：ワクチン種類 -->
+      <div style="display:none;" id="vaccineFluRow">
+        <div class="form-row">
+          <div class="form-label">予防接種の種類 <span class="badge-req">必須</span></div>
+          <select id="vaccineFluType" onchange="onPurposeChange()" style="width:100%;padding:10px 13px;border:1px solid var(--gray-border);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text);">
+            <option value="">選択してください</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 予防接種（その他）のみ：ワクチン種類 -->
+      <div style="display:none;" id="vaccineOtherKindRow">
+        <div class="form-row">
+          <div class="form-label">予防接種の種類 <span class="badge-req">必須</span></div>
+          <select id="vaccineOtherType" onchange="onVaccineTypeChange()" style="width:100%;padding:10px 13px;border:1px solid var(--gray-border);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:var(--text);">
+            <option value="">選択してください</option>
+          </select>
+        </div>
+        <div class="form-row" style="display:none;" id="vaccineOtherRow">
+          <div class="form-label">ワクチン名を入力 <span class="badge-req">必須</span></div>
+          <input type="text" id="vaccineOther" oninput="onPurposeChange()" placeholder="例：日本脳炎ワクチン" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="today-notice" id="todayNotice">
+        <strong>⚠️ 当日のご予約はこちらからはできません。</strong><br>
+        お電話（<a href="tel:0453744454" style="color:#7A3A0A;">045-374-4454</a>）にてお問い合わせください。
+      </div>
+      <div id="calendarArea" style="display:none;">
+        <div class="calendar-header">
+          <button class="cal-nav" onclick="changeMonth(-1)">← 前月</button>
+          <span class="cal-month" id="calMonth"></span>
+          <button class="cal-nav" onclick="changeMonth(1)">翌月 →</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="time-section" id="timeSection">
+          <div class="time-label" id="timeLabel">予約可能な時間帯</div>
+          <div id="timeGrid" class="time-grid"></div>
+          <div id="nextSlotMsg" style="display:none;margin-top:14px;background:#FEF3EC;border:1px solid #F9C9A8;border-radius:10px;padding:12px 14px;">
+            <div style="font-size:13px;color:#7A3A0A;line-height:1.7;margin-bottom:10px;">⚠️ この時間は予約ができません。<br>初めて受診される方には予約枠を2つ使って丁寧な聞き取りを行います。時間にゆとりのある枠をお選びください。</div>
+            <button onclick="resetTimeSelection()" style="width:100%;padding:9px;background:#E8772E;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">時間を選び直す</button>
+          </div>
+        </div>
+      </div>
+      <div id="calendarPlaceholder" style="text-align:center;padding:1.5rem 0;color:#9ca3af;font-size:13px;">
+        ↑ 必要な項目を選択するとカレンダーが表示されます
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="step2">
+    <div class="section-title">step 2 — 患者様情報を入力</div>
+
+    <!-- 予防接種3日以内バナー -->
+    <div class="vaccine-notice" id="vaccineNotice">
+      📋 内容の確認と注意事項のご説明のため、3日以内に担当者からご連絡いたします。ご連絡が取れない場合、予約をキャンセルとさせていただく場合がございますのでご了承ください。
+    </div>
+
+    <div class="card" autocomplete="off">
+      <!-- 共通：お名前 -->
+      <div class="form-row">
+        <div class="form-label">お名前 <span class="badge-req">必須</span></div>
+        <input type="text" id="patientName" placeholder="例：港南 太郎" autocomplete="off">
+      </div>
+      <!-- 共通：生年月日 -->
+      <div class="form-row">
+        <div class="form-label">生年月日 <span class="badge-req">必須</span></div>
+        <input type="date" id="patientDob" autocomplete="off">
+      </div>
+      <!-- 共通：電話番号 -->
+      <div class="form-row" id="telRow">
+        <div class="form-label">電話番号 <span class="badge-req">必須</span></div>
+        <input type="tel" id="patientTel" placeholder="例：090-1234-5678" autocomplete="off">
+        <div class="hint">ご確認のご連絡をする場合がございます。</div>
+      </div>
+      <!-- 通常診療のみ：受診歴 -->
+      <div class="form-row" style="display:none;" id="visitHistoryRow">
+        <div class="form-label">受診歴 <span class="badge-req">必須</span></div>
+        <div class="visit-history-row">
+          <button type="button" class="visit-history-btn" id="btnFirstVisit"   onclick="selectVisitHistory('初めて受診する')">初めて受診する</button>
+          <button type="button" class="visit-history-btn" id="btnReturnVisit"  onclick="selectVisitHistory('受診したことがある')">受診したことがある</button>
+        </div>
+      </div>
+      <!-- 通常診療のみ：症状（必須） -->
+      <div class="form-row" style="margin-bottom:0;display:none;" id="symptomsRow">
+        <div class="form-label">今日の症状 <span class="badge-req">必須</span></div>
+        <textarea id="patientSymptoms" placeholder="例：1日前から発熱とせき　など" rows="4" style="width:100%;padding:10px 13px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-family:inherit;background:#fff;color:#111;resize:vertical;line-height:1.6;transition:border-color 0.15s,box-shadow 0.15s;"></textarea>
+        <div style="margin-top:10px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:10px 14px;font-size:12px;color:#475569;line-height:1.8;">
+          <strong style="color:#334155;">よくあるご質問：皮膚症状でおかかりの方へ</strong><br>
+          当院は皮膚科専門医による外来診療はございません。そのため、総合診療の範囲での治療及びご説明となります。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div id="step3" class="hidden">
+    <div class="section-title">step 3 — 予約内容の確認</div>
+    <div class="confirm-card">
+      <div class="confirm-row">
+        <span class="confirm-label">日時</span>
+        <span class="confirm-val" id="c-datetime">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-label">受診種別</span>
+        <span class="confirm-val" id="c-visitkind">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-label">お名前</span>
+        <span class="confirm-val" id="c-name">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-label">生年月日</span>
+        <span class="confirm-val" id="c-dob">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-label">電話番号</span>
+        <span class="confirm-val" id="c-tel">—</span>
+      </div>
+      <div class="confirm-row" id="c-history-row">
+        <span class="confirm-label">受診歴</span>
+        <span class="confirm-val" id="c-history">—</span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-label" id="c-symptoms-label">症状・種類</span>
+        <span class="confirm-val" id="c-symptoms">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div id="successCard" class="success-card">
+    <div class="success-icon">✅</div>
+    <div class="success-title">予約が完了しました</div>
+    <div class="success-num" id="reserveNum"></div>
+
+    <div style="background:#fff;border:1px solid #BBF7D0;border-radius:12px;padding:1.25rem;margin:1rem 0;">
+      <div style="font-size:12px;color:#15803D;margin-bottom:6px;">ご予約日時</div>
+      <div id="success-datetime" style="font-size:26px;font-weight:700;color:#166534;letter-spacing:0.02em;"></div>
+    </div>
+
+    <!-- 通常診療の場合に表示 -->
+    <div id="success-general-notice" style="display:none;background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:14px;margin-bottom:1rem;font-size:13px;color:#374151;line-height:1.8;text-align:left;">
+      <span style="color:#DC2626;font-weight:700;">発熱で受診される方は、</span>不織布マスクを着用の上でご来院いただき、院内に入る前にまずは扉の前にある椅子にお掛けになってお待ちください。予約時間になりましたら職員が声をかけ、院内にご案内します。
+    </div>
+
+    <!-- 予防接種（その他）の場合に表示 -->
+    <div id="success-vaccine-notice" style="display:none;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:14px;margin-bottom:1rem;font-size:13px;font-weight:600;color:#1E40AF;text-align:left;line-height:1.8;">
+      📋 内容の確認と注意事項のご説明のため、3日以内に担当者からご連絡いたします。ご連絡が取れない場合、予約をキャンセルとさせていただく場合がございますのでご了承ください。
+    </div>
+
+    <div style="background:#FEF9C3;border:1px solid #FDE047;border-radius:12px;padding:1rem;margin-bottom:0.5rem;text-align:left;">
+      <div style="font-size:13px;font-weight:600;color:#854D0E;margin-bottom:4px;">📸 この画面を保存してください</div>
+      <div style="font-size:12px;color:#92400E;line-height:1.7;">スクリーンショットを撮るか、画面を写真に残しておくことをおすすめします。予約番号・日時の控えとしてご活用ください。</div>
+    </div>
+
+    <div class="success-msg" style="margin-top:1rem;">
+      当日はマイナ保険証または資格確認書をご持参ください。<br>
+      キャンセル・変更は当院（045-374-4454）までお電話をお願いします。
+    </div>
+    <button onclick="resetForNewBooking()" style="margin-top:1.5rem;width:100%;padding:12px;background:#fff;color:#166534;border:1px solid #BBF7D0;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:background 0.15s;">← カレンダーに戻る</button>
+  </div>
+
+  <div id="navArea">
+    <button class="submit-btn muted" id="mainBtn" onclick="handleMain()">日付と時間を選んでください</button>
+    <button class="back-btn hidden" id="backBtn" onclick="handleBack()">← 前の画面に戻る</button>
+    <p class="notice">ご不明な点はお電話（045-374-4454）にてお問い合わせください。</p>
+  </div>
+
+  <!-- 管理用モード -->
+  <div style="text-align:center;margin-top:1.5rem;" id="adminToggleArea">
+    <a href="#" id="adminToggle" onclick="toggleAdminBox(event)" style="font-size:11px;color:#bbb;text-decoration:none;">🔑 管理用</a>
+    <div id="adminBox" style="display:none;margin-top:10px;max-width:260px;margin-left:auto;margin-right:auto;">
+      <input type="password" id="adminKeyInput" placeholder="アクセスキー" autocomplete="off"
+             style="width:100%;padding:8px 12px;border:1px solid var(--gray-border);border-radius:8px;font-size:13px;font-family:inherit;text-align:center;">
+      <button onclick="checkAdminKey()" style="width:100%;margin-top:6px;padding:8px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">管理者モードに切り替える</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  var GAS_URL = 'https://script.google.com/macros/s/AKfycbzC1Gi1fKqlngJidQo4ChpftwhggiUNwvrVuPNAw695QAO0Da8-QcaysONtkyF0YqeJ/exec';
+
+  var state = {
+    date: null, time: null, step: 1, currentDt: null,
+    visitKind: null, holidayType: null, visitHistory: null,
+    nextTime: null, nextSlot: null, nextSlotFull: true,
+    purpose: null, purposeLabel: null,
+    isAdmin: false
+  };
+  var bookedSet           = {};
+  var bookedCount         = {};
+  var holidaySet          = {};
+  var specialList         = [];
+  var specialAvailability = {};
+  var vaccineTypes        = { flu: [], other: [] };
+  var noticeInfo          = {};
+  var skinKeywords        = [];
+  var curYear, curMonth;
+  var today = new Date();
+  curYear  = today.getFullYear();
+  curMonth = today.getMonth();
+
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+  function datetimeKey(d, t) { return d + ' ' + t; }
+
+  // ── 特別枠ヘルパー ─────────────────────────────────
+  function toMinutes(timeStr) {
+    var p = timeStr.split(':');
+    return parseInt(p[0]) * 60 + parseInt(p[1]);
+  }
+
+  // 指定日・種別の特別枠を取得
+  function getSpecialForDate(dateStr, visitKind) {
+    var kindLabel = visitKind === 'vaccine_flu'  ? '予防接種（インフルエンザ・新型コロナワクチン）'
+                  : visitKind === 'vaccine_other' ? '予防接種（その他ワクチン）'
+                  : visitKind === 'checkup'       ? '健康診断・検診' : '通常診療';
+    return specialList.filter(function(sp) {
+      return sp.date === dateStr && sp.kind === kindLabel;
+    });
+  }
+
+  // 特別枠の時間スロット一覧を生成
+  function expandSpecial(sp) {
+    var slots = [];
+    var start = toMinutes(sp.start);
+    var end   = toMinutes(sp.end);
+    for (var m = start; m < end; m += 10) {
+      slots.push(pad(Math.floor(m/60)) + ':' + pad(m%60));
+    }
+    return slots;
+  }
+
+  // その時間が特別枠かどうか、最大人数を返す
+  function getSpecialMax(dateStr, timeStr, visitKind) {
+    var specials = getSpecialForDate(dateStr, visitKind);
+    for (var i = 0; i < specials.length; i++) {
+      var times = expandSpecial(specials[i]);
+      if (times.indexOf(timeStr) >= 0) return specials[i].max;
+    }
+    return 0; // 特別枠でない
+  }
+
+  // その時間が予約可能かどうか
+  function isSlotAvailable(dateStr, timeStr, visitKind) {
+    var key       = datetimeKey(dateStr, timeStr);
+    var kindLabel = '予防接種（インフルエンザ・新型コロナワクチン）';
+
+    if (visitKind === 'vaccine_flu') {
+      // 特別枠に空きがある場合は選択可能（bookedSetより優先）
+      if (specialAvailability[key] === kindLabel) return true;
+      // bookedSetに入っていない通常枠は選択可能
+      // （特別枠の時間はbookedSetに必ず入っているので、ここでは通常枠のみ通る）
+      return bookedSet[key] !== true;
+    }
+    // それ以外：bookedSetで通常判定
+    return bookedSet[key] !== true;
+  }
+
+  // ── 管理者モード ───────────────────────────────────
+  var ADMIN_KEY = '562932215';
+
+  function toggleAdminBox(e) {
+    e.preventDefault();
+    var box = document.getElementById('adminBox');
+    box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+  }
+
+  function checkAdminKey() {
+    var key = document.getElementById('adminKeyInput').value.trim();
+    if (key === ADMIN_KEY) {
+      state.isAdmin = true;
+      document.body.classList.add('admin-mode');
+      document.getElementById('adminModeBanner').style.display = 'block';
+      document.getElementById('adminToggleArea').style.display = 'none';
+      document.getElementById('todayNotice').style.display = 'none';
+      // step1とstep2を1ページに並べて表示
+      document.getElementById('step2').classList.remove('hidden');
+      // 種別・日付選択をリセットしてカレンダーを再評価
+      document.getElementById('visitKind').value = '';
+      onVisitKindChange();
+    } else {
+      alert('アクセスキーが正しくありません。');
+    }
+  }
+
+  // ── 受診歴ボタン ───────────────────────────────────
+  function selectVisitHistory(val) {
+    state.visitHistory = val;
+    var btn1 = document.getElementById('btnFirstVisit');
+    var btn2 = document.getElementById('btnReturnVisit');
+    if (btn1) btn1.classList.toggle('selected', val === '初めて受診する');
+    if (btn2) btn2.classList.toggle('selected', val === '受診したことがある');
+  }
+
+  // ── お知らせ表示 ──────────────────────────────────
+  function renderNotice() {
+    var t1 = noticeInfo['診療時間1'] || '';
+    var t2 = noticeInfo['診療時間2'] || '';
+    var noticeText = noticeInfo['お知らせ文'] || '';
+    var noticeUrl  = noticeInfo['お知らせURL'] || '';
+    var noticeLink = noticeInfo['お知らせリンク文'] || '詳しくはこちら';
+
+    var el1 = document.getElementById('notice-time1');
+    var el2 = document.getElementById('notice-time2');
+    if (el1) el1.textContent = t1;
+    if (el1) el1.style.display = t1 ? '' : 'none';
+    if (el2) el2.textContent = t2;
+    if (el2) el2.style.display = t2 ? '' : 'none';
+
+    var linkRow = document.getElementById('notice-link-row');
+    if (linkRow) {
+      if (noticeText || noticeUrl) {
+        linkRow.style.display = '';
+        document.getElementById('notice-text').textContent = noticeText ? noticeText + '　' : '';
+        var aEl = document.getElementById('notice-link');
+        if (noticeUrl) {
+          aEl.href = noticeUrl;
+          aEl.textContent = noticeLink;
+          aEl.style.display = '';
+        } else {
+          aEl.style.display = 'none';
+        }
+      } else {
+        linkRow.style.display = 'none';
+      }
+    }
+  }
+  function buildVaccineSelects() {
+    var fluSel   = document.getElementById('vaccineFluType');
+    var otherSel = document.getElementById('vaccineOtherType');
+
+    // fluプルダウン
+    fluSel.innerHTML = '<option value="">選択してください</option>';
+    (vaccineTypes.flu || []).forEach(function(name) {
+      var opt = document.createElement('option');
+      opt.value = name; opt.textContent = name;
+      fluSel.appendChild(opt);
+    });
+
+    // otherプルダウン
+    otherSel.innerHTML = '<option value="">選択してください</option>';
+    (vaccineTypes.other || []).forEach(function(name) {
+      var opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name === 'その他' ? 'その他（入力してください）' : name;
+      otherSel.appendChild(opt);
+    });
+  }
+  function onVaccineTypeChange() {
+    var val = document.getElementById('vaccineOtherType').value;
+    document.getElementById('vaccineOtherRow').style.display = (val === 'その他') ? 'block' : 'none';
+    onPurposeChange();
+  }
+
+  // ── 種別変更 ───────────────────────────────────────
+  function onVisitKindChange() {
+    var visitKind = document.getElementById('visitKind').value;
+    state.date = null; state.time = null;
+    state.currentDt = null; state.holidayType = null; state.visitHistory = null;
+    state.purpose = null; state.purposeLabel = null;
+    document.getElementById('timeSection').style.display = 'none';
+
+    // 目的選択欄の表示切替
+    document.getElementById('checkupTypeRow').style.display      = (visitKind === 'checkup')      ? 'block' : 'none';
+    document.getElementById('vaccineFluRow').style.display       = (visitKind === 'vaccine_flu')  ? 'block' : 'none';
+    document.getElementById('vaccineOtherKindRow').style.display = (visitKind === 'vaccine_other') ? 'block' : 'none';
+
+    // 選択値リセット
+    document.getElementById('checkupType').value     = '';
+    document.getElementById('vaccineFluType').value  = '';
+    document.getElementById('vaccineOtherType').value = '';
+    document.getElementById('vaccineOtherRow').style.display = 'none';
+    document.getElementById('vaccineOther').value = '';
+
+    updateCalendarVisibility();
+    updateStep2Fields();
+    updateBtn();
+  }
+  // ── 目的（検診種類・ワクチン種類）変更時 ─────────────
+  function onPurposeChange() {
+    state.date = null; state.time = null;
+    document.getElementById('timeSection').style.display = 'none';
+    updateCalendarVisibility();
+    updateBtn();
+  }
+
+  // ── カレンダー表示判定 ────────────────────────────
+  function updateCalendarVisibility() {
+    var visitKind = document.getElementById('visitKind').value;
+    var ready = false;
+    if (!visitKind) {
+      ready = false;
+    } else if (state.isAdmin) {
+      ready = true; // 管理者モードは目的未選択でもカレンダー表示
+    } else if (visitKind === 'checkup') {
+      ready = !!document.getElementById('checkupType').value;
+    } else if (visitKind === 'vaccine_flu') {
+      ready = !!document.getElementById('vaccineFluType').value;
+    } else if (visitKind === 'vaccine_other') {
+      var vo = document.getElementById('vaccineOtherType').value;
+      ready = !!vo && (vo !== 'その他' || !!document.getElementById('vaccineOther').value.trim());
+    } else {
+      ready = true; // general
+    }
+
+    if (ready) {
+      document.getElementById('calendarArea').style.display = 'block';
+      document.getElementById('calendarPlaceholder').style.display = 'none';
+      if (lastFetch > 0) renderCalendar();
+      else fetchBooked(function() { renderCalendar(); });
+    } else {
+      document.getElementById('calendarArea').style.display = 'none';
+      document.getElementById('calendarPlaceholder').style.display = 'block';
+    }
+  }
+
+  // ── 予約枠生成 ─────────────────────────────────────
+  function generateSlots(dt, visitKind, holidayType) {
+    var dow      = dt.getDay();
+    var month    = dt.getMonth() + 1;
+    var isSunday = (dow === 0);
+    var dowAdj   = isSunday ? 6 : dow;
+
+    var amGeneral = [];
+    for (var h = 9; h < 12; h++)
+      for (var m = (h === 9 ? 30 : 0); m < 60; m += 10)
+        amGeneral.push(pad(h) + ':' + pad(m));
+    var pmGeneral = [];
+    for (var h = 14; h < 17; h++)
+      for (var m = (h === 14 ? 30 : 0); m < 60; m += 10)
+        pmGeneral.push(pad(h) + ':' + pad(m));
+
+    var amCheckup = ['09:15'];
+    var pmCheckup = ['14:00'];
+
+    if (visitKind === 'checkup' && isSunday) return [];
+
+    var hasAM = false, hasPM = false;
+    if (month <= 4) {
+      if (dowAdj >= 1 && dowAdj <= 5) hasAM = true;
+      if (dowAdj === 6) hasPM = true;
+    } else if (month === 5) {
+      if (dowAdj === 1 || dowAdj === 3 || dowAdj === 4) { hasAM = true; hasPM = true; }
+      if (dowAdj === 2 || dowAdj === 5) hasAM = true;
+      if (dowAdj === 6) hasPM = true;
+    } else {
+      if (dowAdj >= 1 && dowAdj <= 5) { hasAM = true; hasPM = true; }
+      if (dowAdj === 6) hasPM = true;
+    }
+    if (holidayType === '午前') hasAM = false;
+    if (holidayType === '午後') hasPM = false;
+
+    if (visitKind === 'checkup') {
+      var r = [];
+      if (hasAM) r = r.concat(amCheckup);
+      if (hasPM) r = r.concat(pmCheckup);
+      return r;
+    } else {
+      // general / vaccine_flu / vaccine_other すべて同じ通常枠
+      var r = [];
+      if (hasAM) r = r.concat(amGeneral);
+      if (hasPM) r = r.concat(pmGeneral);
+      return r;
+    }
+  }
+
+  // ── 予約可能日判定 ─────────────────────────────────
+  function isBookable(dt) {
+    var visitKind = document.getElementById('visitKind').value || 'general';
+    var todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    var isVaccine = (visitKind === 'vaccine_flu' || visitKind === 'vaccine_other');
+
+    if (!state.isAdmin) {
+      if ((visitKind === 'general' || visitKind === 'checkup') && dt <= todayMidnight) return false;
+      if (isVaccine) {
+        var earliest = new Date(todayMidnight.getTime() + 7 * 24 * 60 * 60 * 1000);
+        if (dt < earliest) return false;
+      }
+      // 予約可能上限：当月+2ヶ月末まで
+      var maxDate = new Date(today.getFullYear(), today.getMonth() + 3, 0); // 当月+2ヶ月の月末
+      if (dt > maxDate) return false;
+    } else {
+      // 管理者モード：当日は許可するが、過去日は不可（上限なし）
+      if (dt < todayMidnight) return false;
+    }
+
+    var dateKey     = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate();
+    var holidayType = holidaySet[dateKey];
+    if (holidayType === '全日') return false;
+
+    // 通常枠に空きがあるか
+    var normalSlots = generateSlots(dt, visitKind, holidayType);
+    for (var i = 0; i < normalSlots.length; i++) {
+      if (isSlotAvailable(dateKey, normalSlots[i], visitKind)) return true;
+    }
+
+    // 特別枠に空きがあるか（vaccine_fluのみ）
+    if (visitKind === 'vaccine_flu') {
+      var specials = getSpecialForDate(dateKey, visitKind);
+      for (var j = 0; j < specials.length; j++) {
+        var times = expandSpecial(specials[j]);
+        for (var k = 0; k < times.length; k++) {
+          if (isSlotAvailable(dateKey, times[k], visitKind)) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // ── GAS通信（5分キャッシュ）───────────────────────
+  var CACHE_TTL  = 10 * 60 * 1000;
+  var lastFetch  = 0;
+  var isFetching = false;
+  var waitQueue  = [];
+
+  function fetchBooked(callback) {
+    var now = Date.now();
+    if (now - lastFetch < CACHE_TTL && lastFetch > 0) { if (callback) callback(); return; }
+    if (isFetching) { if (callback) waitQueue.push(callback); return; }
+    isFetching = true;
+    if (callback) waitQueue.push(callback);
+    fetch(GAS_URL + '?action=getBooked&_=' + now)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        bookedSet            = {};
+        holidaySet           = {};
+        specialList          = data.specials || [];
+        specialAvailability  = data.specialAvailability || {};
+        vaccineTypes         = data.vaccineTypes || { flu: [], other: [] };
+        noticeInfo           = data.noticeInfo   || {};
+        skinKeywords         = data.skinKeywords || [];
+        (data.booked   || []).forEach(function(k) { bookedSet[k] = true; });
+        (data.holidays || []).forEach(function(h) { holidaySet[h.date] = h.type; });
+        lastFetch  = Date.now();
+        isFetching = false;
+        waitQueue.forEach(function(cb) { cb(); });
+        waitQueue  = [];
+        renderNotice();
+      })
+      .catch(function() {
+        // 通信失敗時もキャッシュを有効にしてカレンダーは表示する
+        lastFetch  = Date.now();
+        isFetching = false;
+        waitQueue.forEach(function(cb) { cb(); });
+        waitQueue  = [];
+      });
+  }
+
+  setInterval(function() {
+    lastFetch = 0;
+    fetchBooked(function() { if (state.step === 1) renderCalendar(); });
+  }, CACHE_TTL);
+
+  // ── カレンダー描画 ─────────────────────────────────
+  function changeMonth(dir) {
+    var newMonth = curMonth + dir;
+    var newYear  = curYear;
+    if (newMonth < 0)  { newMonth = 11; newYear--; }
+    if (newMonth > 11) { newMonth = 0;  newYear++; }
+
+    if (!state.isAdmin && dir > 0) {
+      // 当月+2ヶ月を超えて未来へは進めない
+      var maxMonth = today.getMonth() + 2;
+      var maxYear  = today.getFullYear();
+      if (maxMonth > 11) { maxMonth -= 12; maxYear++; }
+      if (newYear > maxYear || (newYear === maxYear && newMonth > maxMonth)) return;
+    }
+
+    curMonth = newMonth;
+    curYear  = newYear;
+    renderCalendar();
+  }
+
+  function renderCalendar() {
+    var mNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    document.getElementById('calMonth').textContent = curYear + '年 ' + mNames[curMonth];
+    var grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+    ['日','月','火','水','木','金','土'].forEach(function(d) {
+      var el = document.createElement('div'); el.className = 'cal-day-label'; el.textContent = d; grid.appendChild(el);
+    });
+    var first = new Date(curYear, curMonth, 1).getDay();
+    var total = new Date(curYear, curMonth + 1, 0).getDate();
+    for (var i = 0; i < first; i++) {
+      var el = document.createElement('div'); el.className = 'cal-day empty'; grid.appendChild(el);
+    }
+    for (var d = 1; d <= total; d++) {
+      var el   = document.createElement('div'); el.className = 'cal-day'; el.textContent = d;
+      var dt   = new Date(curYear, curMonth, d);
+      var isToday = (dt.getTime() === new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime());
+      if (isToday) el.classList.add('today');
+      if (!isBookable(dt)) {
+        el.classList.add('disabled');
+      } else {
+        el.classList.add('has-slot');
+        el.onclick = (function(_d, _dt) {
+          return function() {
+            document.querySelectorAll('.cal-day').forEach(function(c) { c.classList.remove('selected'); });
+            this.classList.add('selected');
+            state.date = curYear + '/' + (curMonth + 1) + '/' + _d;
+            var dateKey = curYear + '/' + (curMonth + 1) + '/' + _d;
+            state.holidayType = holidaySet[dateKey];
+            state.time = null;
+            showTimeSlots(_dt);
+            updateBtn();
+          };
+        })(d, dt);
+      }
+      if (state.date === curYear + '/' + (curMonth + 1) + '/' + d) el.classList.add('selected');
+      grid.appendChild(el);
+    }
+  }
+
+  // ── 次の枠を取得 ───────────────────────────────────
+  function getNextSlot(slots, currentTime) {
+    var idx = slots.indexOf(currentTime);
+    return (idx >= 0 && idx < slots.length - 1) ? slots[idx + 1] : null;
+  }
+
+  // 時間を選び直す（選択リセット・次枠メッセージを非表示）
+  function resetTimeSelection() {
+    state.time = null;
+    document.querySelectorAll('.time-btn').forEach(function(b) { b.classList.remove('selected'); });
+    document.getElementById('nextSlotMsg').style.display = 'none';
+    updateBtn();
+  }
+
+  // 初診×通常診療かどうか
+  function isFirstVisitGeneral() {
+    return state.visitKind === 'general' && state.visitHistory === '初めて受診する';
+  }
+
+  // ── 時間枠描画 ─────────────────────────────────────
+  function showTimeSlots(dt) {
+    state.currentDt = dt; state.time = null;
+    var grid = document.getElementById('timeGrid');
+    var parts = state.date ? state.date.split('/') : [];
+    document.getElementById('timeSection').style.display = 'block';
+    document.getElementById('nextSlotMsg').style.display = 'none';
+    if (parts.length === 3) document.getElementById('timeLabel').textContent = parts[1] + '月' + parts[2] + '日の予約可能時間';
+
+    var visitKind = document.getElementById('visitKind').value;
+    var dateKey   = state.date;
+
+    // 通常枠 + 特別枠を合わせてソート
+    var normalSlots  = generateSlots(dt, visitKind, state.holidayType);
+    var specialSlots = [];
+    var specials = getSpecialForDate(dateKey, visitKind);
+    specials.forEach(function(sp) {
+      expandSpecial(sp).forEach(function(t) {
+        if (specialSlots.indexOf(t) < 0) specialSlots.push(t);
+      });
+    });
+    // 通常枠から特別枠と重複する時間を除外（特別枠が優先）
+    var allSlots = normalSlots.filter(function(t) { return specialSlots.indexOf(t) < 0; });
+    allSlots = allSlots.concat(specialSlots);
+    allSlots.sort();
+
+    grid.innerHTML = '';
+    if (allSlots.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;font-size:13px;color:#9ca3af;padding:8px 0;">この日は予約枠がありません。</div>';
+      return;
+    }
+    allSlots.forEach(function(t) {
+      var isSpecialSlot = specialSlots.indexOf(t) >= 0;
+      var available     = isSlotAvailable(dateKey, t, visitKind);
+      var btn = document.createElement('button');
+      btn.className   = 'time-btn' + (available ? '' : ' full');
+      if (isSpecialSlot && available) btn.style.borderColor = '#3B82F6';
+      btn.textContent = available ? t : t + '\n予約済';
+      btn.disabled    = !available;
+      if (available) {
+        btn.onclick = (function(_t, _allSlots) {
+          return function() {
+            document.querySelectorAll('.time-btn').forEach(function(b) { b.classList.remove('selected'); });
+            document.getElementById('nextSlotMsg').style.display = 'none';
+            this.classList.add('selected');
+            state.time = _t;
+            updateBtn();
+          };
+        })(t, allSlots);
+      }
+      grid.appendChild(btn);
+    });
+  }
+
+  // ── ボタン状態更新 ─────────────────────────────────
+  function updateBtn() {
+    var btn = document.getElementById('mainBtn');
+    if (state.step === 3) {
+      btn.textContent = 'この内容で予約を確定する'; btn.classList.remove('muted');
+    } else {
+      if (state.date && state.time) { btn.textContent = '予約内容を確認する'; btn.classList.remove('muted'); }
+      else                          { btn.textContent = '日付と時間を選んでください'; btn.classList.add('muted'); }
+    }
+  }
+
+  // ── step2項目（受診歴・症状・予防接種バナー）の表示更新 ─
+  function updateStep2Fields() {
+    var visitKind    = document.getElementById('visitKind').value;
+    var isVaccineOth = visitKind === 'vaccine_other';
+    var isGeneral    = visitKind === 'general';
+    document.getElementById('visitHistoryRow').style.display = isGeneral ? 'block' : 'none';
+    document.getElementById('symptomsRow').style.display     = isGeneral ? 'block' : 'none';
+    document.getElementById('vaccineNotice').style.display   = isVaccineOth ? 'block' : 'none';
+  }
+
+  // ── ステップ遷移 ───────────────────────────────────
+  // step1とstep2は常に1ページに並べて表示し、step3だけ確認画面として切替
+  function goStep(n) {
+    var showInput = (n !== 3);
+    document.getElementById('step1').classList.toggle('hidden', !showInput);
+    document.getElementById('step2').classList.toggle('hidden', !showInput);
+    document.getElementById('step3').classList.toggle('hidden', n !== 3);
+    state.step = (n === 3) ? 3 : 1;
+    updateStep2Fields();
+    if (n === 3) {
+      document.getElementById('c-history-row').style.display = (state.visitKind === 'general') ? 'flex' : 'none';
+    }
+    updateBtn();
+    document.getElementById('backBtn').classList.toggle('hidden', n !== 3);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleBack() {
+    if (state.step === 3) {
+      state.nextTime = null;
+      document.getElementById('nextSlotMsg').style.display = 'none';
+      goStep(1);
+    }
+  }
+
+  // ── 新しい予約のためにフォームをリセット（管理者モードは維持）─
+  function resetForNewBooking() {
+    // state リセット
+    state.date = null; state.time = null; state.currentDt = null;
+    state.holidayType = null; state.visitHistory = null;
+    state.purpose = null; state.purposeLabel = null;
+    state.nextTime = null; state.nextSlot = null; state.nextSlotFull = true;
+
+    // 入力フィールドリセット
+    document.getElementById('visitKind').value = '';
+    document.getElementById('patientName').value = '';
+    document.getElementById('patientDob').value = '';
+    document.getElementById('patientTel').value = '';
+    document.getElementById('patientSymptoms').value = '';
+    document.getElementById('checkupType').value = '';
+    document.getElementById('vaccineFluType').value = '';
+    document.getElementById('vaccineOtherType').value = '';
+    document.getElementById('vaccineOther').value = '';
+    document.getElementById('vaccineOtherRow').style.display = 'none';
+
+    // 画面表示リセット
+    document.getElementById('successCard').style.display = 'none';
+    document.getElementById('navArea').style.display = '';
+    document.getElementById('nextSlotMsg').style.display = 'none';
+
+    lastFetch = 0;
+    fetchBooked(function() {
+      buildVaccineSelects();
+      onVisitKindChange();
+      goStep(1);
+    });
+  }
+
+  // ── 生年月日から満年齢を計算 ───────────────────────
+  function calcAge(dobStr) {
+    var dob = new Date(dobStr);
+    if (isNaN(dob.getTime())) return null;
+    var t = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    var age = t.getFullYear() - dob.getFullYear();
+    var m = t.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && t.getDate() < dob.getDate())) age--;
+    return age;
+  }
+
+  // ── 患者情報の検証＋確認画面の構築 ───────────────────
+  function proceedStep2AndConfirm() {
+    var name = document.getElementById('patientName').value.trim();
+    var dob  = document.getElementById('patientDob').value;
+    var tel  = document.getElementById('patientTel').value.trim();
+    var isCheckup    = state.visitKind === 'checkup';
+    var isVaccineFlu = state.visitKind === 'vaccine_flu';
+    var isVaccineOth = state.visitKind === 'vaccine_other';
+    var isVaccine    = isVaccineFlu || isVaccineOth;
+    var isGeneral    = state.visitKind === 'general';
+
+    if (!state.isAdmin) {
+      if (!name) { alert('お名前を入力してください。'); return; }
+      if (!dob)  { alert('生年月日を入力してください。'); return; }
+      if (!tel)  { alert('電話番号を入力してください。'); return; }
+
+      // 通常診療は13歳以上のみ受付
+      if (isGeneral && dob) {
+        var age = calcAge(dob);
+        if (age !== null && age < 13) {
+          alert('通常診療は13歳以上の方のみご予約いただけます。');
+          return;
+        }
+      }
+    }
+
+    var symptoms, symptomsLabel;
+    if (isGeneral) {
+      if (!state.isAdmin) {
+        if (!state.visitHistory) { alert('受診歴を選択してください。'); return; }
+      }
+      var sym = document.getElementById('patientSymptoms').value.trim();
+      if (!state.isAdmin && !sym) { alert('今日の症状を入力してください。'); return; }
+
+      // 皮膚症状キーワード検知
+      if (!state.isAdmin && sym && skinKeywords.length > 0) {
+        var matched = skinKeywords.some(function(kw) { return kw && sym.indexOf(kw) >= 0; });
+        if (matched) {
+          var ok = confirm('皮膚科専門医による診察ではありません。ご了承いただけた方のみ次の画面に進んでください。');
+          if (!ok) return;
+        }
+      }
+
+      symptoms = sym; symptomsLabel = '今日の症状';
+      if (state.visitHistory === '初めて受診する') {
+        if (!state.nextSlot) {
+          if (state.isAdmin) {
+            state.nextTime = null;
+          } else {
+            alert('この時間は初診の予約ができません。初めて受診される方には2枠が必要です。最後の枠のため、お電話（045-374-4454）にてお問い合わせください。');
+            goStep(1); return;
+          }
+        } else if (state.nextSlotFull) {
+          if (state.isAdmin) {
+            state.nextTime = null;
+          } else {
+            alert('この時間は初診の予約ができません。\n初めて受診される方には予約枠を2つ使って丁寧な聞き取りを行います。時間にゆとりのある枠をお選びください。');
+            goStep(1); return;
+          }
+        } else {
+          state.nextTime = state.nextSlot;
+        }
+      } else { state.nextTime = null; }
+    } else {
+      // 健康診断・予防接種：step1で選択済みの目的をそのまま使用
+      symptoms = state.purpose;
+      symptomsLabel = state.purposeLabel;
+      state.nextTime = null;
+    }
+
+    var kindLabel = isCheckup ? '健康診断・検診'
+                  : isVaccineFlu ? '予防接種（インフルエンザ・新型コロナワクチン）'
+                  : isVaccineOth ? '予防接種（その他ワクチン）' : '通常診療';
+    var datetimeDisp = state.date + '  ' + state.time;
+    if (isGeneral && state.visitHistory === '初めて受診する' && state.nextTime) {
+      datetimeDisp = state.date + '  ' + state.time + ' 〜 ' + state.nextTime + '（2枠）';
+    }
+    document.getElementById('c-datetime').textContent       = datetimeDisp;
+    document.getElementById('c-visitkind').textContent      = kindLabel;
+    document.getElementById('c-name').textContent           = name || '—';
+    document.getElementById('c-dob').textContent             = dob || '—';
+    document.getElementById('c-tel').textContent             = tel || '—';
+    document.getElementById('c-history').textContent        = state.visitHistory || '—';
+    document.getElementById('c-symptoms-label').textContent = symptomsLabel || '症状・種類';
+    document.getElementById('c-symptoms').textContent       = symptoms || '未入力';
+    goStep(3);
+  }
+
+  // ── メインボタン処理 ───────────────────────────────
+  function handleMain() {
+    if (state.step === 1) {
+      var visitKind = document.getElementById('visitKind').value;
+      if (!visitKind)  { alert('受診の種別を選択してください。'); return; }
+
+      // 目的（検診種類・ワクチン種類）の検証（管理者モードは任意）
+      var purpose, purposeLabel;
+      if (visitKind === 'checkup') {
+        purpose = document.getElementById('checkupType').value;
+        if (!state.isAdmin && !purpose) { alert('検診の種類を選択してください。'); return; }
+        purposeLabel = '検診の種類';
+      } else if (visitKind === 'vaccine_flu') {
+        purpose = document.getElementById('vaccineFluType').value;
+        if (!state.isAdmin && !purpose) { alert('予防接種の種類を選択してください。'); return; }
+        purposeLabel = '予防接種の種類';
+      } else if (visitKind === 'vaccine_other') {
+        var vo = document.getElementById('vaccineOtherType').value;
+        if (!state.isAdmin && !vo) { alert('予防接種の種類を選択してください。'); return; }
+        if (vo === 'その他') {
+          var voo = document.getElementById('vaccineOther').value.trim();
+          if (!state.isAdmin && !voo) { alert('ワクチン名を入力してください。'); return; }
+          purpose = voo ? ('その他：' + voo) : 'その他';
+        } else { purpose = vo; }
+        purposeLabel = '予防接種の種類';
+      }
+
+      if (!state.date) { alert('日付を選択してください。'); return; }
+      if (!state.time) { alert('時間を選択してください。'); return; }
+      state.visitKind     = visitKind;
+      state.purpose       = purpose;
+      state.purposeLabel  = purposeLabel;
+      lastFetch = 0;
+      setLoading(true);
+      fetchBooked(function() {
+        setLoading(false);
+        var key = datetimeKey(state.date, state.time);
+        // isSlotAvailableで判定（vaccine_fluは特別枠のavailabilityも考慮）
+        if (!isSlotAvailable(state.date, state.time, state.visitKind)) {
+          alert('選択した時間はたった今予約が入りました。別の時間をお選びください。');
+          state.time = null;
+          var parts = state.date.split('/');
+          showTimeSlots(new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])));
+          updateBtn(); return;
+        }
+        // 通常診療×初診：次枠チェック（受診歴はstep2で選ぶが、まず種別がgeneralの場合に予備チェック）
+        // → 受診歴はstep2確定後なので、ここでは次枠の存在だけ確認してstateに保存
+        // 実際の初診チェックはstep2→step3の「内容を確認する」ボタンで行う
+        state.nextTime = null;
+        if (visitKind === 'general') {
+          var parts2 = state.date.split('/');
+          var dt2 = new Date(parseInt(parts2[0]), parseInt(parts2[1]) - 1, parseInt(parts2[2]));
+          var slots2 = generateSlots(dt2, visitKind, state.holidayType);
+          var nextSlot = getNextSlot(slots2, state.time);
+          state.nextSlot = nextSlot;
+          state.nextSlotFull = nextSlot ? !isSlotAvailable(state.date, nextSlot, visitKind) : true;
+        }
+        proceedStep2AndConfirm();
+      });
+
+    } else if (state.step === 3) {
+      var name         = document.getElementById('patientName').value.trim();
+      var dob          = document.getElementById('patientDob').value;
+      var tel          = document.getElementById('patientTel').value.trim();
+      var isCheckup    = state.visitKind === 'checkup';
+      var isVaccineFlu = state.visitKind === 'vaccine_flu';
+      var isVaccineOth = state.visitKind === 'vaccine_other';
+      var isVaccine    = isVaccineFlu || isVaccineOth;
+      var isGeneral    = state.visitKind === 'general';
+      var symptoms     = isGeneral ? document.getElementById('patientSymptoms').value.trim() : state.purpose;
+      var visitHistory = state.visitHistory || '';
+      var kindLabel    = isCheckup ? '健康診断・検診'
+                       : isVaccineFlu ? '予防接種（インフルエンザ・新型コロナワクチン）'
+                       : isVaccineOth ? '予防接種（その他ワクチン）' : '通常診療';
+      var datetime     = datetimeKey(state.date, state.time);
+      // 通常診療は初診のみ2枠
+      var isDoubleSlot = isGeneral && state.visitHistory === '初めて受診する' && state.nextTime;
+      var reserveNum   = 'R' + String(Math.floor(Math.random() * 900000 + 100000));
+
+      setLoading(true);
+      document.getElementById('mainBtn').disabled = true;
+
+      // 1枠目を予約
+      var url = GAS_URL + '?action=book'
+        + '&datetime='    + encodeURIComponent(datetime)
+        + '&name='        + encodeURIComponent(name)
+        + '&dob='         + encodeURIComponent(dob)
+        + '&tel='         + encodeURIComponent(tel)
+        + '&visitKind='   + encodeURIComponent(kindLabel)
+        + '&visitHistory='+ encodeURIComponent(visitHistory)
+        + '&symptoms='    + encodeURIComponent(symptoms)
+        + '&reserveNum='  + encodeURIComponent(reserveNum);
+
+      fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.success) throw new Error(data.message || 'error');
+          // 初診×通常診療：2枠目も予約
+          if (isDoubleSlot) {
+            var datetime2 = datetimeKey(state.date, state.nextTime);
+            var url2 = GAS_URL + '?action=book'
+              + '&datetime='    + encodeURIComponent(datetime2)
+              + '&name='        + encodeURIComponent(name + '（連続枠）')
+              + '&dob='         + encodeURIComponent(dob)
+              + '&tel='         + encodeURIComponent(tel)
+              + '&visitKind='   + encodeURIComponent(kindLabel)
+              + '&visitHistory='+ encodeURIComponent(visitHistory)
+              + '&symptoms='    + encodeURIComponent('※' + state.time + 'からの連続枠')
+              + '&reserveNum='  + encodeURIComponent(reserveNum + '-2');
+            return fetch(url2).then(function(r2) { return r2.json(); });
+          }
+          return { success: true };
+        })
+        .then(function(data2) {
+          if (data2 && !data2.success) throw new Error(data2.message || 'error');
+          setLoading(false);
+          document.getElementById('reserveNum').textContent = '予約番号：' + reserveNum;
+          var parts = state.date.split('/');
+          var dtDisp = parts[1] + '月' + parts[2] + '日　' + state.time;
+          if (isDoubleSlot) dtDisp += ' 〜 ' + state.nextTime + '（2枠分）';
+          document.getElementById('success-datetime').textContent = dtDisp;
+          document.getElementById('success-vaccine-notice').style.display  = isVaccineOth ? 'block' : 'none';
+          document.getElementById('success-general-notice').style.display  = isGeneral ? 'block' : 'none';
+          document.getElementById('step3').classList.add('hidden');
+          document.getElementById('navArea').style.display = 'none';
+          document.getElementById('successCard').style.display = 'block';
+          document.querySelectorAll('.prog-step').forEach(function(p) { p.classList.add('done'); p.classList.remove('active'); });
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        })
+        .catch(function(err) {
+          setLoading(false);
+          document.getElementById('mainBtn').disabled = false;
+          var msg = err && err.message && err.message !== 'error'
+            ? err.message : 'この枠はすでに予約済みです。別の時間をお選びください。';
+          alert(msg);
+          lastFetch = 0;
+          fetchBooked(function() { goStep(1); });
+        });
+    }
+  }
+
+  function setLoading(on) {
+    var btn = document.getElementById('mainBtn');
+    if (on) { btn.textContent = '通信中...'; btn.classList.add('muted'); btn.disabled = true; }
+    else    { btn.disabled = false; updateBtn(); }
+  }
+
+  fetchBooked(function() { buildVaccineSelects(); updateBtn(); });
+</script>
+</div><!-- /page -->
+</body>
+</html>
