@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>診察スケジュール — ホームケアクリニック横浜港南</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: #F4F6F9; color: #1a1a1a; min-height: 100vh;
+    }
+
+    /* ── ログイン画面 ── */
+    .login-wrap {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+      padding: 2.5rem 2rem; width: 320px; text-align: center;
+    }
+    .login-title { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 6px; }
+    .login-sub   { font-size: 13px; color: #6b7280; margin-bottom: 1.5rem; }
+    .login-input {
+      width: 100%; padding: 10px 13px; border: 1px solid #d1d5db;
+      border-radius: 8px; font-size: 15px; font-family: inherit;
+      margin-bottom: 12px; text-align: center; letter-spacing: 0.1em;
+    }
+    .login-btn {
+      width: 100%; padding: 12px; background: #E8772E; color: #fff;
+      border: none; border-radius: 10px; font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+    }
+    .login-btn:hover { background: #c45e1e; }
+    .login-err { font-size: 13px; color: #dc2626; margin-top: 8px; }
+
+    /* ── メイン画面 ── */
+    .main-wrap { display: none; }
+
+    .top-bar {
+      background: #fff; border-bottom: 1px solid #e5e7eb;
+      padding: 0.9rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .top-title { font-size: 15px; font-weight: 700; color: #111; }
+    .top-right  { display: flex; align-items: center; gap: 10px; }
+    .date-input {
+      border: 1px solid #d1d5db; border-radius: 8px; padding: 6px 10px;
+      font-size: 14px; font-family: inherit; color: #111;
+    }
+    .refresh-btn {
+      background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 8px;
+      padding: 6px 12px; font-size: 13px; cursor: pointer; font-family: inherit;
+      color: #374151;
+    }
+    .refresh-btn:hover { background: #e5e7eb; }
+    .auto-label { font-size: 12px; color: #9ca3af; }
+
+    .page { max-width: 720px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+
+    .date-heading {
+      font-size: 18px; font-weight: 700; color: #111;
+      margin-bottom: 1rem; text-align: center;
+    }
+
+    .slot {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 14px;
+      margin-bottom: 10px; overflow: hidden;
+    }
+    .slot-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-bottom: 1px solid #f0f0f0;
+    }
+    .slot-time {
+      font-size: 20px; font-weight: 700; color: #374151;
+      min-width: 54px; flex-shrink: 0;
+    }
+    .slot-name { font-size: 16px; font-weight: 600; color: #111; flex: 1; }
+    .slot-kind {
+      font-size: 11px; padding: 2px 8px; border-radius: 10px;
+      font-weight: 500; flex-shrink: 0;
+    }
+    .kind-general { background: #E6F1FB; color: #0C447C; }
+    .kind-checkup { background: #FDE8D8; color: #9A4B10; }
+
+    .slot-body { padding: 12px 16px; }
+    .slot-info { font-size: 13px; color: #6b7280; margin-bottom: 10px; line-height: 1.7; }
+    .slot-info span { color: #374151; font-weight: 500; }
+
+    .status-row {
+      display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .status-btn {
+      padding: 7px 16px; border-radius: 8px; border: 1.5px solid #d1d5db;
+      font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
+      background: #fff; color: #6b7280; transition: all 0.15s;
+    }
+    .status-btn:hover { background: #f3f4f6; }
+    .status-btn.active-waiting  { background: #DBEAFE; border-color: #3B82F6; color: #1E40AF; }
+    .status-btn.active-progress { background: #FEF9C3; border-color: #EAB308; color: #713F12; }
+    .status-btn.active-done     { background: #D1FAE5; border-color: #10B981; color: #065F46; }
+    .status-btn.active-cancel   { background: #FEE2E2; border-color: #EF4444; color: #991B1B; }
+
+    .memo-row { display: flex; gap: 8px; align-items: flex-end; }
+    .memo-input {
+      flex: 1; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 8px;
+      font-size: 13px; font-family: inherit; resize: none; min-height: 60px;
+      line-height: 1.6;
+    }
+    .memo-input:focus { outline: none; border-color: #E8772E; box-shadow: 0 0 0 2px rgba(232,119,46,0.12); }
+    .memo-save {
+      padding: 8px 14px; background: #E8772E; color: #fff; border: none;
+      border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: inherit; white-space: nowrap;
+    }
+    .memo-save:hover { background: #c45e1e; }
+    .memo-saved { font-size: 11px; color: #10B981; margin-top: 4px; }
+
+    /* 空き枠 */
+    .slot.empty { background: #fafafa; border-style: dashed; }
+    .slot.empty .slot-header { border-bottom: none; }
+    .slot.empty .slot-time { color: #d1d5db; }
+    .slot.empty .slot-name { color: #d1d5db; font-weight: 400; font-size: 14px; }
+
+    /* ステータスバー */
+    .slot-status-bar {
+      height: 4px; width: 100%;
+    }
+    .bar-waiting  { background: #3B82F6; }
+    .bar-progress { background: #EAB308; }
+    .bar-done     { background: #10B981; }
+    .bar-cancel   { background: #EF4444; }
+    .bar-empty    { background: transparent; }
+
+    .counter {
+      display: flex; gap: 16px; margin-bottom: 1.25rem;
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 12px 16px;
+    }
+    .counter-item { text-align: center; flex: 1; }
+    .counter-num  { font-size: 22px; font-weight: 700; }
+    .counter-label { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+    .c-waiting  { color: #3B82F6; }
+    .c-progress { color: #EAB308; }
+    .c-done     { color: #10B981; }
+    .c-cancel   { color: #EF4444; }
+    .c-total    { color: #374151; }
+  </style>
+</head>
+<body>
+
+<!-- ログイン画面 -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-title">🏥 スタッフ専用</div>
+    <div class="login-sub">ホームケアクリニック横浜港南<br>診察スケジュール管理</div>
+    <input type="password" class="login-input" id="pwInput" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">ログイン</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- メイン画面 -->
+<div class="main-wrap" id="mainWrap">
+
+  <div class="top-bar">
+    <div class="top-title">📋 診察スケジュール</div>
+    <div class="top-right">
+      <input type="date" class="date-input" id="dateInput" onchange="loadSchedule()">
+      <button class="refresh-btn" onclick="loadSchedule()">🔄 更新</button>
+      <span class="auto-label" id="autoLabel">自動更新: 30秒</span>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="date-heading" id="dateHeading"></div>
+    <div class="counter" id="counter" style="display:none;">
+      <div class="counter-item">
+        <div class="counter-num c-total"   id="cnt-total">0</div>
+        <div class="counter-label">予約合計</div>
+      </div>
+      <div class="counter-item">
+        <div class="counter-num c-waiting"  id="cnt-waiting">0</div>
+        <div class="counter-label">来院済み</div>
+      </div>
+      <div class="counter-item">
+        <div class="counter-num c-progress" id="cnt-progress">0</div>
+        <div class="counter-label">診察中</div>
+      </div>
+      <div class="counter-item">
+        <div class="counter-num c-done"     id="cnt-done">0</div>
+        <div class="counter-label">診察終了</div>
+      </div>
+      <div class="counter-item">
+        <div class="counter-num c-cancel"   id="cnt-cancel">0</div>
+        <div class="counter-label">キャンセル</div>
+      </div>
+    </div>
+    <div id="scheduleList"></div>
+  </div>
+</div>
+
+<script>
+  var GAS_URL  = 'https://script.google.com/macros/s/AKfycbzC1Gi1fKqlngJidQo4ChpftwhggiUNwvrVuPNAw695QAO0Da8-QcaysONtkyF0YqeJ/exec';
+  var PASSWORD = 'homecare2026'; // ← パスワードをここで変更できます
+
+  var autoTimer = null;
+  var countdown = 30;
+  var countTimer = null;
+
+  // ── ログイン ──────────────────────────────────────
+  function doLogin() {
+    var pw = document.getElementById('pwInput').value;
+    if (pw === PASSWORD) {
+      document.getElementById('loginWrap').style.display = 'none';
+      document.getElementById('mainWrap').style.display  = 'block';
+      initMain();
+    } else {
+      document.getElementById('loginErr').textContent = 'パスワードが正しくありません。';
+    }
+  }
+
+  // ── 初期化 ────────────────────────────────────────
+  function initMain() {
+    var today = new Date();
+    var yyyy  = today.getFullYear();
+    var mm    = String(today.getMonth() + 1).padStart(2, '0');
+    var dd    = String(today.getDate()).padStart(2, '0');
+    document.getElementById('dateInput').value = yyyy + '-' + mm + '-' + dd;
+    loadSchedule();
+    startAutoRefresh();
+  }
+
+  // ── 自動更新 ──────────────────────────────────────
+  function startAutoRefresh() {
+    if (autoTimer) clearInterval(autoTimer);
+    if (countTimer) clearInterval(countTimer);
+    countdown = 30;
+    countTimer = setInterval(function() {
+      countdown--;
+      document.getElementById('autoLabel').textContent = '自動更新: ' + countdown + '秒';
+      if (countdown <= 0) {
+        countdown = 30;
+        loadSchedule();
+      }
+    }, 1000);
+  }
+
+  // ── 日付変換 ──────────────────────────────────────
+  function inputToSlashDate(val) {
+    // "2026-05-07" → "2026/5/7"
+    var parts = val.split('-');
+    return parseInt(parts[0]) + '/' + parseInt(parts[1]) + '/' + parseInt(parts[2]);
+  }
+
+  function slashToJa(slashDate) {
+    var p = slashDate.split('/');
+    return p[0] + '年' + p[1] + '月' + p[2] + '日';
+  }
+
+  // ── 予約枠生成（reservation.htmlと同じロジック）──
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+  function generateAllSlots(dateStr) {
+    var parts = dateStr.split('/');
+    var dt    = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    var dow   = dt.getDay();
+    var month = dt.getMonth() + 1;
+    if (dow === 0) dow = 6;
+
+    var amGeneral = [];
+    for (var h = 9; h < 12; h++)
+      for (var m = (h === 9 ? 30 : 0); m < 60; m += 10)
+        amGeneral.push(pad(h) + ':' + pad(m));
+
+    var pmGeneral = [];
+    for (var h = 14; h < 17; h++)
+      for (var m = (h === 14 ? 30 : 0); m < 60; m += 10)
+        pmGeneral.push(pad(h) + ':' + pad(m));
+
+    var amCheckup = ['09:15'];
+    var pmCheckup = ['14:00'];
+
+    var hasAM = false, hasPM = false;
+    if (month <= 4) {
+      if (dow >= 1 && dow <= 5) hasAM = true;
+      if (dow === 6) hasPM = true;
+    } else if (month === 5) {
+      if (dow === 1 || dow === 3 || dow === 4) { hasAM = true; hasPM = true; }
+      if (dow === 2 || dow === 5) hasAM = true;
+      if (dow === 6) hasPM = true;
+    } else {
+      if (dow >= 1 && dow <= 5) { hasAM = true; hasPM = true; }
+      if (dow === 6) hasPM = true;
+    }
+
+    var slots = [];
+    if (hasAM) {
+      slots = slots.concat(amCheckup);
+      slots = slots.concat(amGeneral);
+    }
+    if (hasPM) {
+      slots = slots.concat(pmCheckup);
+      slots = slots.concat(pmGeneral);
+    }
+
+    // 重複除去・ソート
+    var unique = [];
+    slots.forEach(function(s) { if (unique.indexOf(s) < 0) unique.push(s); });
+    unique.sort();
+    return unique;
+  }
+
+  // ── スケジュール読み込み ──────────────────────────
+  function loadSchedule() {
+    var dateVal  = document.getElementById('dateInput').value;
+    if (!dateVal) return;
+    var slashDate = inputToSlashDate(dateVal);
+    document.getElementById('dateHeading').textContent = slashToJa(slashDate) + ' の診察スケジュール';
+
+    var url = GAS_URL + '?action=getSchedule&date=' + encodeURIComponent(slashDate) + '&_=' + Date.now();
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        renderSchedule(slashDate, data.rows || []);
+        startAutoRefresh();
+      })
+      .catch(function() {
+        document.getElementById('scheduleList').innerHTML =
+          '<p style="text-align:center;color:#9ca3af;padding:2rem;">通信エラーが発生しました。再度お試しください。</p>';
+      });
+  }
+
+  // ── スケジュール描画 ──────────────────────────────
+  function renderSchedule(dateStr, rows) {
+    var allSlots = generateAllSlots(dateStr);
+    var list     = document.getElementById('scheduleList');
+    list.innerHTML = '';
+    linkedRows = {}; // リセット
+
+    // 連続枠の紐付けを検出（symptoms が "※HH:MMからの連続枠" または "※HH:MMからの初診連続枠" の形式）
+    rows.forEach(function(r) {
+      var m = r.symptoms && r.symptoms.match(/^※(\d{1,2}:\d{2})からの(初診)?連続枠$/);
+      if (m) {
+        var parentTime = m[1];
+        var parentRow  = null;
+        rows.forEach(function(pr) {
+          var pt = pr.datetime.split(' ')[1];
+          if (pt === parentTime && pr.row !== r.row) parentRow = pr;
+        });
+        if (parentRow) {
+          linkedRows[r.row]         = parentRow.row;
+          linkedRows[parentRow.row] = r.row;
+        }
+      }
+    });
+
+    // カウンター
+    var total    = rows.length;
+    var waiting  = rows.filter(function(r) { return r.status === '来院済み'; }).length;
+    var progress = rows.filter(function(r) { return r.status === '診察中'; }).length;
+    var done     = rows.filter(function(r) { return r.status === '診察終了'; }).length;
+    var cancel   = rows.filter(function(r) { return r.status === 'キャンセル'; }).length;
+    var counter  = document.getElementById('counter');
+    if (total > 0) {
+      counter.style.display = 'flex';
+      document.getElementById('cnt-total').textContent    = total;
+      document.getElementById('cnt-waiting').textContent  = waiting;
+      document.getElementById('cnt-progress').textContent = progress;
+      document.getElementById('cnt-done').textContent     = done;
+      document.getElementById('cnt-cancel').textContent   = cancel;
+    } else {
+      counter.style.display = 'none';
+    }
+
+    if (allSlots.length === 0) {
+      list.innerHTML = '<p style="text-align:center;color:#9ca3af;padding:2rem;">この日は診療がありません。</p>';
+      return;
+    }
+
+    allSlots.forEach(function(time) {
+      var booked = null;
+      rows.forEach(function(r) {
+        var t = r.datetime.split(' ')[1];
+        if (t === time) booked = r;
+      });
+
+      var div = document.createElement('div');
+      div.className = 'slot' + (booked ? '' : ' empty');
+
+      if (booked) {
+        var barClass = booked.status === '来院済み'  ? 'bar-waiting'
+                     : booked.status === '診察中'   ? 'bar-progress'
+                     : booked.status === '診察終了' ? 'bar-done'
+                     : booked.status === 'キャンセル' ? 'bar-cancel' : 'bar-waiting';
+        var kindClass  = booked.visitKind === '健康診断・検診' ? 'kind-checkup' : 'kind-general';
+        var isLinked   = !!linkedRows[booked.row];
+        var linkedBadge = isLinked ? '<span style="font-size:10px;background:#E0E7FF;color:#3730A3;padding:1px 7px;border-radius:10px;font-weight:600;margin-left:6px;">連続枠</span>' : '';
+        var isFirstVisit = booked.visitHistory === '初めて受診する';
+        var firstVisitBadge = isFirstVisit ? '<span style="font-size:11px;background:#DC2626;color:#fff;padding:2px 9px;border-radius:10px;font-weight:700;margin-left:6px;">初診</span>' : '';
+        div.innerHTML =
+          '<div class="slot-status-bar ' + barClass + '" id="bar-' + booked.row + '"></div>' +
+          '<div class="slot-header">' +
+            '<div class="slot-time">' + time + '</div>' +
+            '<div class="slot-name">' + esc(booked.name) + firstVisitBadge + linkedBadge + '</div>' +
+            '<div class="slot-kind ' + kindClass + '">' + esc(booked.visitKind) + '</div>' +
+          '</div>' +
+          '<div class="slot-body">' +
+            '<div class="slot-info">' +
+              '📞 <span>' + esc(booked.tel) + '</span>　' +
+              '🩺 <span>' + esc(booked.symptoms || '未入力') + '</span>　' +
+              '🔖 <span>' + esc(booked.reserveNum) + '</span>' +
+            '</div>' +
+            '<div class="status-row">' +
+              '<button class="status-btn ' + (booked.status === '来院済み'   ? 'active-waiting'  : '') + '" data-row="' + booked.row + '" data-status="来院済み"   onclick="updateStatus(' + booked.row + ', \'来院済み\')">🔵 来院済み</button>' +
+              '<button class="status-btn ' + (booked.status === '診察中'     ? 'active-progress' : '') + '" data-row="' + booked.row + '" data-status="診察中"     onclick="updateStatus(' + booked.row + ', \'診察中\')">🟡 診察中</button>' +
+              '<button class="status-btn ' + (booked.status === '診察終了'   ? 'active-done'     : '') + '" data-row="' + booked.row + '" data-status="診察終了"   onclick="updateStatus(' + booked.row + ', \'診察終了\')">✅ 診察終了</button>' +
+              '<button class="status-btn ' + (booked.status === 'キャンセル' ? 'active-cancel'   : '') + '" data-row="' + booked.row + '" data-status="キャンセル" onclick="updateStatus(' + booked.row + ', \'キャンセル\')">❌ キャンセル</button>' +
+            '</div>' +
+            '<div class="memo-row">' +
+              '<textarea class="memo-input" id="memo-' + booked.row + '" placeholder="メモ（申し送り、参考URLなど）">' + esc(booked.memo) + '</textarea>' +
+              '<button class="memo-save" onclick="saveMemo(' + booked.row + ')">保存</button>' +
+            '</div>' +
+            '<div class="memo-saved" id="saved-' + booked.row + '"></div>' +
+            '<div id="memo-links-' + booked.row + '" style="font-size:12px;margin-top:4px;line-height:1.8;">' + linkify(booked.memo) + '</div>' +
+          '</div>';
+      } else {
+        div.innerHTML =
+          '<div class="slot-status-bar bar-empty"></div>' +
+          '<div class="slot-header">' +
+            '<div class="slot-time">' + time + '</div>' +
+            '<div class="slot-name">空き</div>' +
+          '</div>';
+      }
+      list.appendChild(div);
+    });
+  }
+
+  // 連続枠の紐付け { row: linkedRow } 両方向に登録
+  var linkedRows = {};
+
+  // ── ステータス更新（即時UI反映→バックグラウンド保存）
+  function updateStatus(row, status) {
+    // 即座にUI更新（この行）
+    applyStatusUI(row, status);
+
+    // 連続枠があれば連動
+    if (linkedRows[row]) {
+      applyStatusUI(linkedRows[row], status);
+      var url2 = GAS_URL + '?action=updateStatus&row=' + linkedRows[row] + '&status=' + encodeURIComponent(status) + '&_=' + Date.now();
+      fetch(url2).catch(function() {});
+    }
+
+    // バックグラウンドでスプレッドシートに保存
+    var url = GAS_URL + '?action=updateStatus&row=' + row + '&status=' + encodeURIComponent(status) + '&_=' + Date.now();
+    fetch(url).catch(function() {});
+  }
+
+  function applyStatusUI(row, status) {
+    var btns = document.querySelectorAll('[data-row="' + row + '"]');
+    btns.forEach(function(b) {
+      b.classList.remove('active-waiting', 'active-progress', 'active-done', 'active-cancel');
+    });
+    var activeClass = status === '診察中'     ? 'active-progress'
+                    : status === '診察終了'   ? 'active-done'
+                    : status === 'キャンセル' ? 'active-cancel' : 'active-waiting';
+    btns.forEach(function(b) {
+      if (b.dataset.status === status) b.classList.add(activeClass);
+    });
+    var bar = document.getElementById('bar-' + row);
+    if (bar) {
+      bar.className = 'slot-status-bar ' +
+        (status === '診察中'     ? 'bar-progress'
+       : status === '診察終了'   ? 'bar-done'
+       : status === 'キャンセル' ? 'bar-cancel' : 'bar-waiting');
+    }
+  }
+
+  // ── メモ保存 ──────────────────────────────────────
+  function saveMemo(row) {
+    var memo = document.getElementById('memo-' + row).value;
+    var url  = GAS_URL + '?action=updateMemo&row=' + row + '&memo=' + encodeURIComponent(memo) + '&_=' + Date.now();
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success) {
+          var el = document.getElementById('saved-' + row);
+          el.textContent = '✓ 保存しました';
+          var linkEl = document.getElementById('memo-links-' + row);
+          if (linkEl) linkEl.innerHTML = linkify(memo);
+          setTimeout(function() { el.textContent = ''; }, 2000);
+        } else {
+          alert('保存に失敗しました: ' + JSON.stringify(data));
+        }
+      })
+      .catch(function(err) { alert('通信エラー: ' + err); });
+  }
+
+  // ── URLをリンクに変換（escより先に処理）─────────
+  function linkify(text) {
+    if (!text) return '';
+    // URLを一時プレースホルダーに置換してからescape
+    var urls = [];
+    var tmp = text.replace(/(https?:\/\/[^\s]+)/g, function(url) {
+      urls.push(url);
+      return '\x00' + (urls.length - 1) + '\x00';
+    });
+    var escaped = esc(tmp);
+    // プレースホルダーをリンクに戻す
+    escaped = escaped.replace(/\x00(\d+)\x00/g, function(_, i) {
+      var url = urls[parseInt(i)];
+      return '<a href="' + url + '" target="_blank" style="color:#E8772E;word-break:break-all;">' + url + '</a>';
+    });
+    return escaped;
+  }
+
+  // ── POST送信ヘルパー（未使用）────────────────────
+  function gasPost(params) {
+    var url = GAS_URL + '?action=' + encodeURIComponent(params.action);
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params)
+    }).then(function(r) { return r.json(); });
+  }
+
+  // ── HTMLエスケープ ────────────────────────────────
+  function esc(str) {
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+</body>
+</html>
