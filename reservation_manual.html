@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>オンライン予約サイト 職員向けマニュアル</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #E8722A; --orange-lt: #FDE8D4;
+      --purple: #7B3F8C; --purple-lt: #F3EAF6;
+      --gray-bg: #F5F6F8; --gray-bd: #E2E8F0;
+      --text: #1a1a2e; --muted: #64748b;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif; background: var(--gray-bg); color: var(--text); line-height: 1.8; font-size: 14px; }
+    .header { background: linear-gradient(135deg, var(--orange) 0%, var(--purple) 100%); color: #fff; padding: 2rem 2rem 1.75rem; text-align: center; }
+    .header-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; opacity: 0.8; margin-bottom: 8px; }
+    .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .header p  { font-size: 13px; opacity: 0.85; }
+    .nav { background: #fff; border-bottom: 1px solid var(--gray-bd); display: flex; overflow-x: auto; padding: 0 1.5rem; position: sticky; top: 0; z-index: 100; }
+    .nav a { display: block; padding: 12px 14px; font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 3px solid transparent; transition: all 0.15s; }
+    .nav a:hover { color: var(--orange); border-bottom-color: var(--orange); }
+    .main { max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 5rem; }
+    .section { margin-bottom: 2.75rem; }
+    .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--orange); margin-bottom: 6px; }
+    .section h2 { font-size: 19px; font-weight: 700; padding-bottom: 10px; border-bottom: 2px solid var(--gray-bd); margin-bottom: 1.1rem; }
+    .card { background: #fff; border: 1px solid var(--gray-bd); border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+    .card-title { font-size: 13px; font-weight: 700; color: var(--purple); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid var(--purple-lt); }
+    .step { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; }
+    .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--orange); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+    .step p { font-size: 13px; line-height: 1.75; }
+    .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .badge-blue   { background: #DBEAFE; color: #1E40AF; }
+    .badge-yellow { background: #FEF9C3; color: #713F12; }
+    .badge-green  { background: #D1FAE5; color: #065F46; }
+    .badge-red    { background: #FEE2E2; color: #991B1B; }
+    .badge-purple { background: var(--purple-lt); color: var(--purple); }
+    .note    { background: #FFF8F0; border-left: 4px solid var(--orange); border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 13px; color: #7A3A0A; margin: 10px 0; }
+    .tip     { background: var(--purple-lt); border-left: 4px solid var(--purple); border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 13px; color: #4A2460; margin: 10px 0; }
+    .caution { background: #FEF2F2; border-left: 4px solid #EF4444; border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 13px; color: #991B1B; margin: 10px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+    th { background: #F8FAFC; color: #475569; font-weight: 700; padding: 8px 12px; text-align: left; border: 1px solid var(--gray-bd); }
+    td { padding: 8px 12px; border: 1px solid var(--gray-bd); vertical-align: top; line-height: 1.6; }
+    tr:nth-child(even) td { background: #FAFAFA; }
+    .ss-table th { background: #E8F5E9; color: #1B5E20; border-color: #A5D6A7; }
+    .ss-table td { border-color: #C8E6C9; }
+    .ss-table tr:nth-child(even) td { background: #F1F8E9; }
+    .flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+    .flow-box { background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 600; color: #334155; text-align: center; }
+    .flow-box.orange { background: var(--orange-lt); border-color: #F9C9A8; color: #7A3A0A; }
+    .flow-box.purple { background: var(--purple-lt); border-color: #D8C0E0; color: #4A2460; }
+    .flow-arrow { color: #94a3b8; font-size: 16px; }
+    ul.list { padding-left: 1.2rem; font-size: 13px; line-height: 2.1; }
+    @media (max-width: 600px) { .header { padding: 1.5rem 1rem; } .main { padding: 1.25rem 1rem 4rem; } }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">STAFF MANUAL — 職員向け内部資料</div>
+  <h1>オンライン予約サイト 取扱マニュアル</h1>
+  <p>ホームケアクリニック横浜港南 ｜ 2026年6月版</p>
+</div>
+
+<nav class="nav">
+  <a href="#flow">予約の流れ</a>
+  <a href="#kinds">受診種別の仕様</a>
+  <a href="#admin">管理者モード</a>
+  <a href="#schedule">スケジュール管理</a>
+  <a href="#cancel">キャンセル対応</a>
+  <a href="#customize">カスタマイズ</a>
+</nav>
+
+<div class="main">
+
+  <div class="section" style="margin-bottom:2rem;">
+    <div class="card" style="background:linear-gradient(135deg,#FDE8D4,#F3EAF6);border-color:#F9C9A8;">
+      <p style="font-size:14px;line-height:1.9;color:#3a2a1a;">このマニュアルは、職員がオンライン予約サイトの仕組みを理解し、日常業務でスムーズに活用するための資料です。患者さんの予約の流れ・各種別の仕様・スケジュール管理ツールの使い方を中心に説明します。</p>
+    </div>
+
+    <!-- 現在の運用状況 告知バナー -->
+    <div style="background:#FEF2F2;border:2px solid #EF4444;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-size:20px;">🚫</span>
+        <div style="font-size:15px;font-weight:700;color:#991B1B;">現在、予防接種の予約は停止中です</div>
+      </div>
+      <p style="font-size:13px;color:#7F1D1D;line-height:1.9;">
+        「予防接種（インフルエンザ・新型コロナワクチン）」および「予防接種（その他ワクチン）」は、現時点では予約サイト上に<strong>表示されない設定</strong>になっています。<br>
+        システムの準備は完了していますが、運用は開始していません。患者さんから予防接種の予約について問い合わせがあった場合は、<strong>現在オンライン予約は受け付けていない旨</strong>をお伝えください。
+      </p>
+    </div>
+
+    <div style="background:#EFF6FF;border:2px solid #3B82F6;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span style="font-size:20px;">📅</span>
+        <div style="font-size:15px;font-weight:700;color:#1E40AF;">インフルエンザワクチンの予約開始予定：2026年9月ごろ</div>
+      </div>
+      <p style="font-size:13px;color:#1E3A5F;line-height:1.9;">
+        インフルエンザワクチンのオンライン予約は<strong>2026年9月ごろ</strong>の稼働開始を予定しています。<br>
+        開始にあたっては、スプレッドシートの「お知らせ」シートで <code style="background:#DBEAFE;padding:1px 6px;border-radius:4px;font-size:12px;">vaccine_flu表示</code> を <code style="background:#DBEAFE;padding:1px 6px;border-radius:4px;font-size:12px;">ON</code> に変更するだけで公開されます。あわせて「特別枠」シートへの接種日程の登録も必要です。
+      </p>
+    </div>
+  </div>
+
+  <!-- 1. 予約の流れ -->
+  <div class="section" id="flow">
+    <div class="section-label">Section 01</div>
+    <h2>患者さんの予約の流れ</h2>
+    <div class="card">
+      <div class="card-title">予約から記録まで</div>
+      <div class="flow">
+        <div class="flow-box orange">① 受診種別を選ぶ</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box orange">② 目的を選ぶ<br><span style="font-size:10px;font-weight:400;">検診・ワクチンの場合その種類を選択</span></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box orange">③ 日付・時間を選ぶ</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box orange">④ 患者情報を入力</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box purple">⑤ 確認・予約確定</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box purple">スプレッドシートに自動記録</div>
+      </div>
+      <div class="tip" style="margin-top:12px;">💡 ①〜④は1ページに縦並びで表示されます。「予約内容を確認する」ボタンを押すと確認画面に切り替わり、「予約を確定する」で完了です。</div>
+    </div>
+    <div class="card">
+      <div class="card-title">予約番号について</div>
+      <p style="font-size:13px;">予約完了画面に <strong>「R」＋6桁の数字</strong>（例：R123456）が表示されます。電話問い合わせ時の照合などに、必要に応じてご活用ください。患者さんにはスクリーンショット保存をお願いしています。</p>
+    </div>
+  </div>
+
+  <!-- 2. 受診種別の仕様 -->
+  <div class="section" id="kinds">
+    <div class="section-label">Section 02</div>
+    <h2>受診種別ごとの仕様</h2>
+
+    <div class="card">
+      <div class="card-title">🩺 通常診療</div>
+      <table>
+        <tr><th>項目</th><th>内容</th></tr>
+        <tr><td>予約可能期間</td><td>翌日〜当月末から2ヶ月後末まで</td></tr>
+        <tr><td>対象年齢</td><td><strong>13歳以上のみ</strong>（12歳以下はサイトで予約不可）</td></tr>
+        <tr><td>入力項目</td><td>氏名・生年月日・電話番号・受診歴・今日の症状</td></tr>
+        <tr><td>初診の場合</td><td>「初めて受診する」を選ぶと自動的に<strong>2枠連続で確保</strong>される</td></tr>
+        <tr><td>皮膚症状の入力時</td><td>症状欄に皮膚関連キーワードが含まれると「皮膚科専門医による診察ではありません。ご了承いただけた方のみ次の画面に進んでください。」と表示される</td></tr>
+        <tr><td>予約完了画面</td><td>発熱患者向けの<span style="color:#DC2626;font-weight:700;">来院案内が赤字</span>で表示される（不織布マスクの着用や待機場所など）</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🏥 健康診断・検診</div>
+      <table>
+        <tr><th>項目</th><th>内容</th></tr>
+        <tr><td>予約可能期間</td><td>翌日以降（日曜日は予約不可）</td></tr>
+        <tr><td>予約枠</td><td>AM 09:15 または PM 14:00 の2択のみ</td></tr>
+        <tr><td>検診の種類</td><td>雇い入れ時検診・施設入所前検診・横浜市特定検診・横浜市がん検診・その他検診</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💉 予防接種（インフルエンザ・新型コロナワクチン）</div>
+      <table>
+        <tr><th>項目</th><th>内容</th></tr>
+        <tr><td>予約可能日</td><td><strong>特別枠シートに登録した日時のみ</strong>。登録のない日はカレンダーで選択不可</td></tr>
+        <tr><td>定員管理</td><td>同じ時間帯に複数予約可能。特別枠の「最大人数」を超えた時点で満員表示</td></tr>
+        <tr><td>ワクチン種類</td><td>インフルエンザ（3歳以上）／（2歳以下）、新型コロナワクチン（5歳以上）／（4歳以下）</td></tr>
+        <tr><td>表示制御</td><td>お知らせシートの「vaccine_flu表示」をON/OFFでプルダウン表示を切り替え可能</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💉 予防接種（その他ワクチン）</div>
+      <table>
+        <tr><th>項目</th><th>内容</th></tr>
+        <tr><td>予約可能期間</td><td>7日後以降</td></tr>
+        <tr><td>予約完了後</td><td>「内容確認と注意事項説明のため3日以内に担当者からご連絡します」と表示される</td></tr>
+        <tr><td>必要な対応</td><td>3日以内に患者へ連絡。連絡が取れない場合は運用ルールに則ってキャンセル処理などの対応を行う</td></tr>
+        <tr><td>表示制御</td><td>お知らせシートの「vaccine_other表示」をON/OFFで切り替え可能</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3. 管理者モード -->
+  <div class="section" id="admin">
+    <div class="section-label">Section 03</div>
+    <h2>管理者モード（職員専用・当日予約）</h2>
+    <div class="card">
+      <div class="card-title">管理者モードでできること</div>
+      <p style="font-size:13px;margin-bottom:10px;color:var(--muted);">通常モードで設定されている予約制限を解除した職員専用モードです。患者向け予約サイトと同じページで利用できます。</p>
+      <ul class="list">
+        <li>通常診療・健康診断の<strong>当日予約</strong>（通常は翌日以降）</li>
+        <li>予防接種の<strong>当日予約</strong>（通常は7日後以降）</li>
+        <li>13歳未満の通常診療予約</li>
+        <li>通常モードでの必須項目を省略（未入力）での予約が可能</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">切り替え手順</div>
+      <div class="step"><div class="step-num">1</div><p>予約サイトを開き、ページ最下部までスクロールする</p></div>
+      <div class="step"><div class="step-num">2</div><p>「🔑 管理用」リンクをクリックするとアクセスキー入力欄が表示される</p></div>
+      <div class="step"><div class="step-num">3</div><p>アクセスキーを入力して「管理者モードに切り替える」を押す</p></div>
+      <div class="step"><div class="step-num">4</div><p>ヘッダー下に紫の「🔑 管理者モード」バナーが表示されれば完了</p></div>
+      <div class="note">⚠️ ページを再読み込み（F5）するとモードが解除されます。アクセスキーは職員以外に共有しないでください。</div>
+    </div>
+  </div>
+
+  <!-- 4. スケジュール管理 -->
+  <div class="section" id="schedule">
+    <div class="section-label">Section 04</div>
+    <h2>スケジュール管理ツールの使い方</h2>
+    <div class="card" style="background:var(--purple-lt);border-color:#D8C0E0;">
+      <p style="font-size:13px;color:#4A2460;line-height:1.8;">外来でのクロスログに置き換わるツールとして、スケジュール管理ツールを開発しました。</p>
+    </div>
+    <div class="card">
+      <div class="card-title">基本操作</div>
+      <div class="step"><div class="step-num">1</div><p>スケジュール管理ページをブラウザで開き、パスワードを入力してログイン</p></div>
+      <div class="step"><div class="step-num">2</div><p>上部の日付入力欄で確認したい日付を選ぶ（デフォルトは当日）</p></div>
+      <div class="step"><div class="step-num">3</div><p>各予約カードのボタンでステータスを更新する。スプレッドシートに自動保存される</p></div>
+      <div class="tip">💡 30秒ごとに自動更新。すぐ反映させたいときは「🔄 更新」ボタンを押してください。PC・スマートフォン・タブレットどの端末でも利用できます。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ステータスボタンの使い方</div>
+      <table>
+        <tr><th>ボタン</th><th>いつ押す？</th></tr>
+        <tr><td><span class="badge badge-blue">🔵 来院済み</span></td><td>患者さんが来院したことを確認したとき</td></tr>
+        <tr><td><span class="badge badge-yellow">🟡 診察中</span></td><td>診察室に案内したとき</td></tr>
+        <tr><td><span class="badge badge-green">✅ 診察終了</span></td><td>診察が終了したとき</td></tr>
+        <tr><td><span class="badge badge-red">❌ キャンセル</span></td><td>予約がキャンセルになったとき（押すと確認ダイアログが表示される）</td></tr>
+      </table>
+      <div class="note" style="margin-top:10px;">⚠️ キャンセルにするとその枠が空き枠として予約サイトに復活します。誤ってキャンセルした場合は、もう一度キャンセルボタンを押すと「待機中」に戻せます。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">初診・連続枠の見かた</div>
+      <ul class="list">
+        <li>初診患者の名前の横に赤い <span class="badge badge-red">初診</span> バッジが表示される</li>
+        <li>2枠目のカードには青い <span class="badge badge-blue">連続枠</span> バッジが表示される</li>
+        <li><strong>一方のステータスを変更すると、もう一方も自動的に連動して更新される</strong></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">メモ機能</div>
+      <p style="font-size:13px;">各予約カードの下部にメモ欄があります。homisカルテURLや申し送り事項などを自由に記入し、「保存」ボタンを押してください。</p>
+      <div class="caution">「保存」ボタンを押す前にページを更新すると入力内容が消えます。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💉 ワクチン集計タブ</div>
+      <p style="font-size:13px;margin-bottom:10px;">「💉 ワクチン集計」タブで接種件数を確認できます。</p>
+      <table>
+        <tr><th>表示項目</th><th>内容</th></tr>
+        <tr><td>今週の残り件数</td><td>今日〜週末（日曜）の来院予定件数</td></tr>
+        <tr><td>今月の残り件数</td><td>今日〜月末の来院予定件数</td></tr>
+        <tr><td>今週の総予約件数</td><td>今週（月〜日）の全予約件数</td></tr>
+        <tr><td>今月の総予約件数</td><td>当月全体の予約件数</td></tr>
+      </table>
+      <div class="tip" style="margin-top:10px;">💡 「← 前月」「翌月 →」で月を切り替え可能。キャンセル分は自動除外されます。件数は予約日（来院予定日）で集計しています。</div>
+      <div class="note" style="margin-top:8px;">⚠️ 現在は運用開始前です。</div>
+    </div>
+  </div>
+
+  <!-- 5. キャンセル対応 -->
+  <div class="section" id="cancel">
+    <div class="section-label">Section 05</div>
+    <h2>キャンセル対応</h2>
+    <div class="card">
+      <div class="card-title">電話でキャンセルの連絡があった場合</div>
+      <div class="step"><div class="step-num">1</div><p>スケジュール管理ページで<strong>予約日</strong>を選択する</p></div>
+      <div class="step"><div class="step-num">2</div><p>患者名・時間を確認し「❌ キャンセル」ボタンを押す</p></div>
+      <div class="step"><div class="step-num">3</div><p>確認ダイアログで「OK」を押すとキャンセル完了・スプレッドシートに自動反映</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">予防接種（その他ワクチン）で連絡が取れない場合</div>
+      <ul class="list">
+        <li>予約完了から3日以内に担当者から患者へ連絡する</li>
+        <li>3日経っても連絡が取れない場合は運用ルールに則ってキャンセル処理などの対応を行う</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6. スプレッドシートでカスタマイズできること -->
+  <div class="section" id="customize">
+    <div class="section-label">Section 06</div>
+    <h2>スプレッドシートでカスタマイズできること</h2>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:1rem;">以下の項目はスプレッドシートを編集するだけで反映されます。<strong>HTMLの修正・サーバーへのアップロードは不要</strong>です。</p>
+    <div class="card">
+      <table class="ss-table">
+        <tr><th>シート名</th><th>できること</th></tr>
+        <tr>
+          <td><strong>休診日</strong></td>
+          <td>休診日の追加・削除。「全日」「午前」「午後」の区別も設定可。全日→その日が選択不可、午前/午後→その時間帯の枠が非表示になる</td>
+        </tr>
+        <tr>
+          <td><strong>特別枠</strong></td>
+          <td>インフル・コロナワクチンの接種日・時間・最大人数の追加・削除・変更。登録した日時のみ患者が予約可能になる</td>
+        </tr>
+        <tr>
+          <td><strong>ワクチン種類</strong></td>
+          <td>予防接種プルダウンの項目追加・削除。A列に「インフルエンザ・コロナ」または「その他」、B列にワクチン名を入力するだけで反映される</td>
+        </tr>
+        <tr>
+          <td><strong>お知らせ</strong></td>
+          <td>予約サイト上部の診療時間・お知らせ文言の変更。予防接種のプルダウン表示のON/OFF（vaccine_flu表示・vaccine_other表示をON/OFFで制御）</td>
+        </tr>
+        <tr>
+          <td><strong>皮膚症状キーワード</strong></td>
+          <td>症状欄に入力されたとき「皮膚科専門医ではない」確認を表示するキーワードの追加・削除</td>
+        </tr>
+      </table>
+      <div class="tip" style="margin-top:12px;">💡 上記以外の変更（受診種別の追加・デザイン変更・予約ルールの変更など）はHTMLファイルの修正が必要です。システム担当者にご相談ください。</div>
+    </div>
+  </div>
+
+  <div style="text-align:center;padding:2rem 0;font-size:12px;color:#9ca3af;border-top:1px solid var(--gray-bd);margin-top:1rem;">
+    ホームケアクリニック横浜港南 ｜ オンライン予約サイト取扱マニュアル ｜ 2026年6月版<br>
+    本資料は職員向けの内部資料です。患者さんへの配布はご遠慮ください。
+  </div>
+
+</div>
+</body>
+</html>
