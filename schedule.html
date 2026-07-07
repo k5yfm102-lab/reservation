@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>診察スケジュール — ホームケアクリニック横浜港南</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+      background: #F4F6F9; color: #1a1a1a; min-height: 100vh;
+    }
+
+    /* ── 次回予約モーダル ── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 1000;
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #fff; border-radius: 16px; width: 100%; max-width: 480px;
+      max-height: 90vh; overflow-y: auto; padding: 1.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-title { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px; }
+    .modal-sub   { font-size: 12px; color: #6b7280; margin-bottom: 1.25rem; }
+    .modal-section { margin-bottom: 1rem; }
+    .modal-label { font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+    .modal-val   { font-size: 14px; color: #111; background: #F8FAFC; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; }
+    .modal-select {
+      width: 100%; padding: 9px 12px; border: 1px solid #d1d5db; border-radius: 8px;
+      font-size: 14px; font-family: inherit; background: #fff; color: #111;
+    }
+    .modal-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .modal-cal-nav { background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 8px; padding: 5px 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
+    .modal-cal-month { font-size: 14px; font-weight: 700; color: #111; }
+    .modal-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 10px; }
+    .modal-cal-label { font-size: 10px; font-weight: 700; text-align: center; padding: 4px 0; color: #9ca3af; }
+    .modal-cal-day {
+      font-size: 12px; text-align: center; padding: 7px 2px; border-radius: 6px;
+      cursor: pointer; border: 1px solid transparent; transition: all 0.1s;
+    }
+    .modal-cal-day:hover:not(.md-disabled):not(.md-empty) { background: #FDE8D4; }
+    .modal-cal-day.md-disabled { color: #d1d5db; cursor: not-allowed; }
+    .modal-cal-day.md-empty    { cursor: default; }
+    .modal-cal-day.md-today    { border-color: #E8772E; color: #E8772E; font-weight: 700; }
+    .modal-cal-day.md-selected { background: #E8772E; color: #fff; font-weight: 700; }
+    .modal-time-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .modal-time-btn {
+      padding: 9px 4px; border-radius: 8px; border: 1px solid #e5e7eb;
+      background: #fff; font-size: 12px; cursor: pointer; font-family: inherit;
+      text-align: center; transition: all 0.12s; color: #374151;
+    }
+    .modal-time-btn:hover:not(.mt-full) { background: #FDE8D4; border-color: #E8772E; }
+    .modal-time-btn.mt-full    { color: #d1d5db; cursor: not-allowed; }
+    .modal-time-btn.mt-selected { background: #E8772E; color: #fff; border-color: #E8772E; font-weight: 700; }
+    .modal-btn-row { display: flex; gap: 8px; margin-top: 1.25rem; }
+    .modal-btn-cancel { flex: 1; padding: 11px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; font-size: 14px; cursor: pointer; font-family: inherit; color: #6b7280; }
+    .modal-btn-submit { flex: 2; padding: 11px; border: none; border-radius: 10px; background: #E8772E; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .modal-btn-submit:disabled { background: #d1d5db; cursor: not-allowed; }
+    .login-wrap {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 16px;
+      padding: 2.5rem 2rem; width: 320px; text-align: center;
+    }
+    .login-title { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 6px; }
+    .login-sub   { font-size: 13px; color: #6b7280; margin-bottom: 1.5rem; }
+    .login-input {
+      width: 100%; padding: 10px 13px; border: 1px solid #d1d5db;
+      border-radius: 8px; font-size: 15px; font-family: inherit;
+      margin-bottom: 12px; text-align: center; letter-spacing: 0.1em;
+    }
+    .login-btn {
+      width: 100%; padding: 12px; background: #E8772E; color: #fff;
+      border: none; border-radius: 10px; font-size: 15px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+    }
+    .login-btn:hover { background: #c45e1e; }
+    .login-err { font-size: 13px; color: #dc2626; margin-top: 8px; }
+
+    /* ── メイン画面 ── */
+    .main-wrap { display: none; }
+
+    .top-bar {
+      background: #fff; border-bottom: 1px solid #e5e7eb;
+      padding: 0.9rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .top-title { font-size: 15px; font-weight: 700; color: #111; }
+    .top-right  { display: flex; align-items: center; gap: 10px; }
+    .date-input {
+      border: 1px solid #d1d5db; border-radius: 8px; padding: 6px 10px;
+      font-size: 14px; font-family: inherit; color: #111;
+    }
+    .refresh-btn {
+      background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 8px;
+      padding: 6px 12px; font-size: 13px; cursor: pointer; font-family: inherit;
+      color: #374151;
+    }
+    .refresh-btn:hover { background: #e5e7eb; }
+    .auto-label { font-size: 12px; color: #9ca3af; }
+
+    .page { max-width: 720px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+
+    .date-heading {
+      font-size: 18px; font-weight: 700; color: #111;
+      margin-bottom: 1rem; text-align: center;
+    }
+
+    .slot {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 14px;
+      margin-bottom: 10px; overflow: hidden;
+    }
+    .slot-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; border-bottom: 1px solid #f0f0f0;
+    }
+    .slot-time {
+      font-size: 20px; font-weight: 700; color: #374151;
+      min-width: 54px; flex-shrink: 0;
+    }
+    .slot-name { font-size: 16px; font-weight: 600; color: #111; flex: 1; }
+    .slot-kind {
+      font-size: 11px; padding: 2px 8px; border-radius: 10px;
+      font-weight: 500; flex-shrink: 0;
+    }
+    .kind-general { background: #E6F1FB; color: #0C447C; }
+    .kind-checkup { background: #FDE8D8; color: #9A4B10; }
+
+    .slot-body { padding: 12px 16px; }
+    .slot-info { font-size: 13px; color: #6b7280; margin-bottom: 10px; line-height: 1.7; }
+    .slot-info span { color: #374151; font-weight: 500; }
+
+    .status-row {
+      display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
+    }
+    .status-btn {
+      padding: 7px 16px; border-radius: 8px; border: 1.5px solid #d1d5db;
+      font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
+      background: #fff; color: #6b7280; transition: all 0.15s;
+    }
+    .status-btn:hover { background: #f3f4f6; }
+    .status-btn.active-waiting  { background: #DBEAFE; border-color: #3B82F6; color: #1E40AF; }
+    .status-btn.active-progress { background: #FEF9C3; border-color: #EAB308; color: #713F12; }
+    .status-btn.active-done     { background: #D1FAE5; border-color: #10B981; color: #065F46; }
+    .status-btn.active-cancel   { background: #FEE2E2; border-color: #EF4444; color: #991B1B; }
+
+    .memo-row { display: flex; gap: 8px; align-items: flex-end; }
+    .memo-input {
+      flex: 1; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 8px;
+      font-size: 13px; font-family: inherit; resize: none; min-height: 60px;
+      line-height: 1.6;
+    }
+    .memo-input:focus { outline: none; border-color: #E8772E; box-shadow: 0 0 0 2px rgba(232,119,46,0.12); }
+    .memo-save {
+      padding: 8px 14px; background: #E8772E; color: #fff; border: none;
+      border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: inherit; white-space: nowrap;
+    }
+    .memo-save:hover { background: #c45e1e; }
+    .memo-saved { font-size: 11px; color: #10B981; margin-top: 4px; }
+
+    /* 空き枠 */
+    .slot.empty { background: #fafafa; border-style: dashed; }
+    .slot.empty .slot-header { border-bottom: none; }
+    .slot.empty .slot-time { color: #d1d5db; }
+    .slot.empty .slot-name { color: #d1d5db; font-weight: 400; font-size: 14px; }
+
+    /* ステータスバー */
+    .slot-status-bar {
+      height: 4px; width: 100%;
+    }
+    .bar-waiting  { background: #e5e7eb; }
+    .bar-arrived  { background: #3B82F6; }
+    .bar-progress { background: #EAB308; }
+    .bar-done     { background: #10B981; }
+    .bar-cancel   { background: #EF4444; }
+    .bar-empty    { background: transparent; }
+
+    .counter {
+      display: flex; gap: 16px; margin-bottom: 1.25rem;
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 12px;
+      padding: 12px 16px;
+    }
+    .counter-item { text-align: center; flex: 1; }
+    .counter-num  { font-size: 22px; font-weight: 700; }
+    .counter-label { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+    .c-waiting  { color: #3B82F6; }
+    .c-progress { color: #EAB308; }
+    .c-done     { color: #10B981; }
+    .c-cancel   { color: #EF4444; }
+    .c-total    { color: #374151; }
+  </style>
+</head>
+<body>
+
+<!-- ログイン画面 -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-title">🏥 スタッフ専用</div>
+    <div class="login-sub">ホームケアクリニック横浜港南<br>診察スケジュール管理</div>
+    <input type="password" class="login-input" id="pwInput" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">ログイン</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- メイン画面 -->
+<div class="main-wrap" id="mainWrap">
+
+  <div class="top-bar">
+    <div class="top-title">📋 診察スケジュール</div>
+    <div class="top-right">
+      <input type="date" class="date-input" id="dateInput" onchange="onDateChange()">
+      <button class="refresh-btn" onclick="refreshCurrent()">🔄 更新</button>
+      <span class="auto-label" id="autoLabel">自動更新: 30秒</span>
+    </div>
+  </div>
+
+  <!-- 表示切り替えボタン -->
+  <div style="background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;padding:8px 1.25rem;gap:8px;">
+    <button id="btnViewDay" onclick="switchView('day')"
+      style="padding:6px 16px;font-size:12px;font-weight:700;border:2px solid #E8772E;border-radius:20px;background:#E8772E;color:#fff;cursor:pointer;font-family:inherit;">
+      当日
+    </button>
+    <button id="btnViewWeek" onclick="switchView('week')"
+      style="padding:6px 16px;font-size:12px;font-weight:600;border:2px solid #e5e7eb;border-radius:20px;background:#fff;color:#6b7280;cursor:pointer;font-family:inherit;">
+      週間
+    </button>
+  </div>
+
+  <!-- タブ -->
+  <div style="background:#fff;border-bottom:1px solid #e5e7eb;display:flex;padding:0 1.25rem;">
+    <button id="tabSchedule" onclick="switchTab('schedule')"
+      style="padding:12px 18px;font-size:13px;font-weight:700;border:none;border-bottom:3px solid #E8772E;background:none;color:#E8772E;cursor:pointer;font-family:inherit;">
+      📅 スケジュール
+    </button>
+    <button id="tabStats" onclick="switchTab('stats')"
+      style="padding:12px 18px;font-size:13px;font-weight:600;border:none;border-bottom:3px solid transparent;background:none;color:#9ca3af;cursor:pointer;font-family:inherit;">
+      💉 ワクチン集計
+    </button>
+  </div>
+
+  <!-- スケジュールパネル（当日） -->
+  <div id="panelSchedule">
+    <div class="page">
+      <div class="date-heading" id="dateHeading"></div>
+      <div class="counter" id="counter" style="display:none;">
+        <div class="counter-item">
+          <div class="counter-num c-total"   id="cnt-total">0</div>
+          <div class="counter-label">予約合計</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-num c-waiting"  id="cnt-waiting">0</div>
+          <div class="counter-label">来院済み</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-num c-progress" id="cnt-progress">0</div>
+          <div class="counter-label">診察中</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-num c-done"     id="cnt-done">0</div>
+          <div class="counter-label">診察終了</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-num c-cancel"   id="cnt-cancel">0</div>
+          <div class="counter-label">キャンセル</div>
+        </div>
+      </div>
+      <div id="scheduleList"></div>
+    </div>
+  </div>
+
+  <!-- 週間表示パネル -->
+  <div id="panelWeek" style="display:none;">
+    <div class="page">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+        <button onclick="changeWeek(-1)" style="background:#f3f4f6;border:1px solid #d1d5db;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit;">← 前週</button>
+        <div id="weekLabel" style="font-size:14px;font-weight:700;color:#111;"></div>
+        <button onclick="changeWeek(1)"  style="background:#f3f4f6;border:1px solid #d1d5db;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit;">翌週 →</button>
+      </div>
+      <div id="weekGrid" style="overflow-x:auto;"></div>
+    </div>
+  </div>
+
+  <!-- ワクチン集計パネル -->
+  <div id="panelStats" style="display:none;">
+    <div class="page">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+        <div style="font-size:16px;font-weight:700;color:#111;">💉 ワクチン接種件数集計</div>
+        <button onclick="loadStats()" style="background:#f3f4f6;border:1px solid #d1d5db;border-radius:8px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit;color:#374151;">🔄 更新</button>
+      </div>
+      <!-- 月切り替え -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:1.25rem;">
+        <button onclick="changeStatsMonth(-1)" style="background:#F3EAF6;border:1px solid #D8C0E0;border-radius:20px;padding:5px 16px;font-size:12px;font-weight:600;color:#5C2E6A;cursor:pointer;font-family:inherit;">← 前月</button>
+        <div id="statsMonthLabel" style="font-size:15px;font-weight:700;color:#1e293b;min-width:100px;text-align:center;"></div>
+        <button onclick="changeStatsMonth(1)" style="background:#F3EAF6;border:1px solid #D8C0E0;border-radius:20px;padding:5px 16px;font-size:12px;font-weight:600;color:#5C2E6A;cursor:pointer;font-family:inherit;">翌月 →</button>
+      </div>
+      <div id="statsContent">
+        <div style="text-align:center;padding:2rem;color:#9ca3af;font-size:14px;">読み込み中...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 次回予約モーダル -->
+<div class="modal-overlay" id="nextBookingModal">
+  <div class="modal-box">
+    <div class="modal-title">📅 次回予約</div>
+    <div class="modal-sub" id="nrPatientLabel"></div>
+
+    <!-- 患者情報（引き継ぎ） -->
+    <div class="modal-section">
+      <div class="modal-label">氏名</div>
+      <div class="modal-val" id="nrName"></div>
+    </div>
+    <div class="modal-section">
+      <div class="modal-label">受診種別</div>
+      <select class="modal-select" id="nrVisitKind" onchange="nrOnKindChange()">
+        <option value="general">一般内科診療</option>
+        <option value="fever">発熱など風邪症状での受診</option>
+        <option value="checkup">健康診断・検診</option>
+      </select>
+    </div>
+
+    <!-- カレンダー -->
+    <div class="modal-section">
+      <div class="modal-label">予約日</div>
+      <div class="modal-cal-header">
+        <button class="modal-cal-nav" onclick="nrChangeMonth(-1)">← 前月</button>
+        <span class="modal-cal-month" id="nrCalMonth"></span>
+        <button class="modal-cal-nav" onclick="nrChangeMonth(1)">翌月 →</button>
+      </div>
+      <div class="modal-cal-grid" id="nrCalGrid"></div>
+    </div>
+
+    <!-- 時間 -->
+    <div class="modal-section" id="nrTimeSection" style="display:none;">
+      <div class="modal-label">予約時間</div>
+      <div class="modal-time-grid" id="nrTimeGrid"></div>
+    </div>
+
+    <div id="nrSelectedDisp" style="display:none;background:#FDE8D4;border-radius:8px;padding:10px 12px;font-size:13px;font-weight:700;color:#7A3A0A;margin-bottom:4px;text-align:center;"></div>
+
+    <div class="modal-btn-row">
+      <button class="modal-btn-cancel" onclick="closeNextBookingModal()">キャンセル</button>
+      <button class="modal-btn-submit" id="nrSubmitBtn" onclick="submitNextBooking()" disabled>予約を確定する</button>
+    </div>
+    <div id="nrMsg" style="font-size:12px;color:#dc2626;margin-top:8px;text-align:center;"></div>
+  </div>
+</div>
+
+<script>
+  var GAS_URL  = 'https://script.google.com/macros/s/AKfycbwuLAJ2L1tMx1j4AHmo--VaiL8FRHBrrwbuNSX_R4kpqCnmYifTX6zh-Xglg1rW31E5/exec';
+  var PASSWORD = 'homecare2026'; // ← パスワードをここで変更できます
+
+  var autoTimer = null;
+  var countdown = 30;
+  var countTimer = null;
+
+  // ── ログイン ──────────────────────────────────────
+  function doLogin() {
+    var pw = document.getElementById('pwInput').value;
+    if (pw === PASSWORD) {
+      document.getElementById('loginWrap').style.display = 'none';
+      document.getElementById('mainWrap').style.display  = 'block';
+      initMain();
+    } else {
+      document.getElementById('loginErr').textContent = 'パスワードが正しくありません。';
+    }
+  }
+
+  // ── 初期化 ────────────────────────────────────────
+  function initMain() {
+    var today = new Date();
+    var yyyy  = today.getFullYear();
+    var mm    = String(today.getMonth() + 1).padStart(2, '0');
+    var dd    = String(today.getDate()).padStart(2, '0');
+    document.getElementById('dateInput').value = yyyy + '-' + mm + '-' + dd;
+    loadSchedule();
+    startAutoRefresh();
+  }
+
+  // ── 自動更新 ──────────────────────────────────────
+  function startAutoRefresh() {
+    if (autoTimer) clearInterval(autoTimer);
+    if (countTimer) clearInterval(countTimer);
+    countdown = 30;
+    countTimer = setInterval(function() {
+      countdown--;
+      document.getElementById('autoLabel').textContent = '自動更新: ' + countdown + '秒';
+      if (countdown <= 0) {
+        countdown = 30;
+        refreshCurrent();
+      }
+    }, 1000);
+  }
+
+  // ── 日付変換 ──────────────────────────────────────
+  function inputToSlashDate(val) {
+    // "2026-05-07" → "2026/5/7"
+    var parts = val.split('-');
+    return parseInt(parts[0]) + '/' + parseInt(parts[1]) + '/' + parseInt(parts[2]);
+  }
+
+  function slashToJa(slashDate) {
+    var p = slashDate.split('/');
+    return p[0] + '年' + p[1] + '月' + p[2] + '日';
+  }
+
+  // ── 予約枠生成（reservation.htmlと同じロジック）──
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+  function generateAllSlots(dateStr) {
+    var parts = dateStr.split('/');
+    var dt    = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    var dow   = dt.getDay();
+    var month = dt.getMonth() + 1;
+    if (dow === 0) dow = 6;
+
+    var amGeneral = [];
+    for (var h = 9; h < 12; h++)
+      for (var m = (h === 9 ? 30 : 0); m < 60; m += 10)
+        amGeneral.push(pad(h) + ':' + pad(m));
+
+    var pmGeneral = [];
+    for (var h = 14; h < 17; h++)
+      for (var m = (h === 14 ? 30 : 0); m < 60; m += 10)
+        pmGeneral.push(pad(h) + ':' + pad(m));
+
+    var amCheckup = ['09:15'];
+    var pmCheckup = ['14:00'];
+
+    var hasAM = false, hasPM = false;
+    if (month <= 4) {
+      if (dow >= 1 && dow <= 5) hasAM = true;
+      if (dow === 6) hasPM = true;
+    } else if (month === 5) {
+      if (dow === 1 || dow === 3 || dow === 4) { hasAM = true; hasPM = true; }
+      if (dow === 2 || dow === 5) hasAM = true;
+      if (dow === 6) hasPM = true;
+    } else {
+      if (dow >= 1 && dow <= 5) { hasAM = true; hasPM = true; }
+      if (dow === 6) hasPM = true;
+    }
+
+    var slots = [];
+    if (hasAM) {
+      slots = slots.concat(amCheckup);
+      slots = slots.concat(amGeneral);
+    }
+    if (hasPM) {
+      slots = slots.concat(pmCheckup);
+      slots = slots.concat(pmGeneral);
+    }
+
+    // 重複除去・ソート
+    var unique = [];
+    slots.forEach(function(s) { if (unique.indexOf(s) < 0) unique.push(s); });
+    unique.sort();
+    return unique;
+  }
+
+  var currentView = 'day'; // 'day' or 'week'
+  var weekOffset  = 0;    // 今週から何週ずれているか
+
+  function onDateChange() {
+    if (currentView === 'day') loadSchedule();
+  }
+
+  function refreshCurrent() {
+    if (currentView === 'day')  loadSchedule();
+    else                        loadWeek();
+  }
+
+  // ── 表示切り替え ───────────────────────────────────
+  function switchView(view) {
+    currentView = view;
+    var isDay = (view === 'day');
+    document.getElementById('panelSchedule').style.display = isDay ? 'block' : 'none';
+    document.getElementById('panelWeek').style.display     = isDay ? 'none'  : 'block';
+
+    var bDay  = document.getElementById('btnViewDay');
+    var bWeek = document.getElementById('btnViewWeek');
+    bDay.style.background   = isDay ? '#E8772E' : '#fff';
+    bDay.style.color        = isDay ? '#fff'     : '#6b7280';
+    bDay.style.borderColor  = isDay ? '#E8772E'  : '#e5e7eb';
+    bDay.style.fontWeight   = isDay ? '700'      : '600';
+    bWeek.style.background  = isDay ? '#fff'     : '#E8772E';
+    bWeek.style.color       = isDay ? '#6b7280'  : '#fff';
+    bWeek.style.borderColor = isDay ? '#e5e7eb'  : '#E8772E';
+    bWeek.style.fontWeight  = isDay ? '600'      : '700';
+
+    if (isDay) {
+      loadSchedule();
+      startAutoRefresh();
+    } else {
+      // 週間表示中は自動更新を停止
+      if (autoTimer)  clearInterval(autoTimer);
+      if (countTimer) clearInterval(countTimer);
+      document.getElementById('autoLabel').textContent = '自動更新: オフ';
+      weekOffset = 0;
+      loadWeek();
+    }
+  }
+
+  function changeWeek(dir) {
+    weekOffset += dir;
+    loadWeek();
+  }
+
+  // ── 週間表示 ───────────────────────────────────────
+  function getWeekSunday(offset) {
+    var d = new Date();
+    d.setHours(0,0,0,0);
+    var dow = d.getDay(); // 0=日
+    d.setDate(d.getDate() - dow + offset * 7);
+    return d;
+  }
+
+  function dateToSlash(d) {
+    return d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate();
+  }
+
+  function dateToInput(d) {
+    var m = String(d.getMonth()+1).padStart(2,'0');
+    var dd = String(d.getDate()).padStart(2,'0');
+    return d.getFullYear() + '-' + m + '-' + dd;
+  }
+
+  function loadWeek() {
+    var sunday = getWeekSunday(weekOffset);
+    var days   = [];
+    for (var i = 0; i < 7; i++) {
+      var d = new Date(sunday.getFullYear(), sunday.getMonth(), sunday.getDate() + i);
+      days.push(d);
+    }
+
+    var endDate = days[6];
+    document.getElementById('weekLabel').textContent =
+      dateToSlash(sunday) + ' 〜 ' + dateToSlash(endDate);
+
+    document.getElementById('weekGrid').innerHTML =
+      '<p style="text-align:center;color:#9ca3af;padding:2rem;font-size:13px;">読み込み中...</p>';
+
+    // 7日分を並列取得（クロージャ問題を回避するためIIFEで囲む）
+    var promises = days.map(function(day) {
+      var sl  = dateToSlash(day);
+      var url = GAS_URL + '?action=getSchedule&date=' + encodeURIComponent(sl) + '&_=' + Date.now();
+      return fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          return { date: new Date(day.getTime()), slashDate: sl, rows: data.rows || [] };
+        })
+        .catch(function() {
+          return { date: new Date(day.getTime()), slashDate: sl, rows: [] };
+        });
+    });
+
+    Promise.all(promises).then(function(results) {
+      renderWeek(results);
+    }).catch(function() {
+      document.getElementById('weekGrid').innerHTML =
+        '<p style="text-align:center;color:#dc2626;padding:2rem;font-size:13px;">読み込みに失敗しました。再度お試しください。</p>';
+    });
+  }
+
+  function renderWeek(results) {
+    var dayNames = ['日','月','火','水','木','金','土'];
+    var today    = new Date(); today.setHours(0,0,0,0);
+    var grid     = document.getElementById('weekGrid');
+
+    var html = '<div style="display:grid;grid-template-columns:repeat(7,minmax(130px,1fr));gap:6px;min-width:760px;">';
+
+    // ヘッダー行（曜日・日付・件数・詳細ボタン）
+    results.forEach(function(r) {
+      var d       = r.date;
+      var dow     = d.getDay();
+      var isToday = (d.getTime() === today.getTime());
+      var color   = dow === 0 ? '#DC2626' : dow === 6 ? '#2563EB' : '#374151';
+      var bg      = isToday ? '#FFF7ED' : '#F8FAFC';
+      var border  = isToday ? '2px solid #E8772E' : '1px solid #e5e7eb';
+      var total   = r.rows.filter(function(x) { return x.status !== 'キャンセル'; }).length;
+
+      html += '<div style="background:' + bg + ';border:' + border + ';border-radius:10px 10px 0 0;padding:10px 8px;text-align:center;">';
+      html += '<div style="font-size:13px;font-weight:700;color:' + color + ';">' + dayNames[dow] + '</div>';
+      html += '<div style="font-size:12px;color:#6b7280;">' + (d.getMonth()+1) + '/' + d.getDate() + '</div>';
+      if (total > 0) {
+        html += '<div style="margin-top:4px;background:#E8772E;color:#fff;border-radius:10px;font-size:11px;font-weight:700;padding:1px 8px;display:inline-block;">' + total + '件</div>';
+      } else {
+        html += '<div style="margin-top:4px;font-size:11px;color:#d1d5db;">-</div>';
+      }
+      html += '<button onclick="jumpToDay(\'' + dateToInput(d) + '\')" style="margin-top:6px;display:block;width:100%;padding:4px;background:#fff;border:1px solid #d1d5db;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;color:#374151;">詳細 →</button>';
+      html += '</div>';
+    });
+
+    // スロット行（全枠表示）
+    results.forEach(function(r) {
+      var d       = r.date;
+      var isToday = (d.getTime() === today.getTime());
+      var bg      = isToday ? '#FFFBF5' : '#fff';
+      var border  = isToday ? '2px solid #E8772E' : '1px solid #e5e7eb';
+      var slashDate = r.slashDate;
+      var allSlots  = generateAllSlots(slashDate);
+
+      html += '<div style="background:' + bg + ';border:' + border + ';border-top:none;border-radius:0 0 10px 10px;padding:6px;">';
+
+      if (allSlots.length === 0) {
+        html += '<div style="text-align:center;color:#d1d5db;font-size:11px;padding:12px 0;">診療なし</div>';
+      } else {
+        allSlots.forEach(function(time) {
+          // その時間の予約を全件取得
+          var bookedList = r.rows.filter(function(x) {
+            return x.datetime.split(' ')[1] === time;
+          });
+
+          if (bookedList.length === 0) {
+            // 空き枠
+            html += '<div style="background:#F3F4F6;border-radius:4px;margin-bottom:3px;padding:4px 6px;text-align:center;">';
+            html += '<span style="font-size:10px;color:#d1d5db;">' + esc(time) + ' 空き</span>';
+            html += '</div>';
+          } else {
+            bookedList.forEach(function(row) {
+              var statusColor =
+                row.status === '来院済み'  ? '#3B82F6' :
+                row.status === '診察中'    ? '#EAB308' :
+                row.status === '診察終了'  ? '#10B981' :
+                row.status === 'キャンセル'? '#EF4444' : '#e5e7eb';
+              html += '<div style="background:#F8FAFC;border-left:3px solid ' + statusColor + ';border-radius:0 4px 4px 0;margin-bottom:3px;padding:4px 6px;">';
+              html += '<div style="font-size:10px;color:#6b7280;">' + esc(time) + '</div>';
+              html += '<div style="font-size:11px;font-weight:600;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(row.name || '—') + '</div>';
+              if (row.kana) html += '<div style="font-size:10px;color:#9ca3af;">' + esc(row.kana) + '</div>';
+              if (row.status === 'キャンセル') {
+                html += '<div style="font-size:10px;color:#EF4444;">キャンセル</div>';
+              }
+              html += '</div>';
+            });
+          }
+        });
+      }
+      html += '</div>';
+    });
+
+    html += '</div>';
+    grid.innerHTML = html;
+  }
+
+  function jumpToDay(dateInput) {
+    document.getElementById('dateInput').value = dateInput;
+    switchView('day');
+  }
+
+  // ── スケジュール読み込み ──────────────────────────
+  function loadSchedule() {
+    var dateVal  = document.getElementById('dateInput').value;
+    if (!dateVal) return;
+    var slashDate = inputToSlashDate(dateVal);
+    document.getElementById('dateHeading').textContent = slashToJa(slashDate) + ' の診察スケジュール';
+
+    var url = GAS_URL + '?action=getSchedule&date=' + encodeURIComponent(slashDate) + '&_=' + Date.now();
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        renderSchedule(slashDate, data.rows || []);
+        startAutoRefresh();
+      })
+      .catch(function() {
+        document.getElementById('scheduleList').innerHTML =
+          '<p style="text-align:center;color:#9ca3af;padding:2rem;">通信エラーが発生しました。再度お試しください。</p>';
+      });
+  }
+
+  // ── スケジュール描画 ──────────────────────────────
+  function renderSchedule(dateStr, rows) {
+    var allSlots = generateAllSlots(dateStr);
+    var list     = document.getElementById('scheduleList');
+    list.innerHTML = '';
+    linkedRows = {}; // リセット
+
+    // 連続枠の紐付けを検出（symptoms が "※HH:MMからの連続枠" または "※HH:MMからの初診連続枠" の形式）
+    rows.forEach(function(r) {
+      var m = r.symptoms && r.symptoms.match(/^※(\d{1,2}:\d{2})からの(初診)?連続枠$/);
+      if (m) {
+        var parentTime = m[1];
+        var parentRow  = null;
+        rows.forEach(function(pr) {
+          var pt = pr.datetime.split(' ')[1];
+          if (pt === parentTime && pr.row !== r.row) parentRow = pr;
+        });
+        if (parentRow) {
+          linkedRows[r.row]         = parentRow.row;
+          linkedRows[parentRow.row] = r.row;
+        }
+      }
+    });
+
+    // カウンター
+    var total    = rows.length;
+    var waiting  = rows.filter(function(r) { return r.status === '来院済み'; }).length;
+    var progress = rows.filter(function(r) { return r.status === '診察中'; }).length;
+    var done     = rows.filter(function(r) { return r.status === '診察終了'; }).length;
+    var cancel   = rows.filter(function(r) { return r.status === 'キャンセル'; }).length;
+    var counter  = document.getElementById('counter');
+    if (total > 0) {
+      counter.style.display = 'flex';
+      document.getElementById('cnt-total').textContent    = total;
+      document.getElementById('cnt-waiting').textContent  = waiting;
+      document.getElementById('cnt-progress').textContent = progress;
+      document.getElementById('cnt-done').textContent     = done;
+      document.getElementById('cnt-cancel').textContent   = cancel;
+    } else {
+      counter.style.display = 'none';
+    }
+
+    if (allSlots.length === 0) {
+      list.innerHTML = '<p style="text-align:center;color:#9ca3af;padding:2rem;">この日は診療がありません。</p>';
+      return;
+    }
+
+    allSlots.forEach(function(time) {
+      // 同じ時間の予約を全件取得（特別枠は複数入る可能性あり）
+      var bookedList = [];
+      rows.forEach(function(r) {
+        var t = r.datetime.split(' ')[1];
+        if (t === time) bookedList.push(r);
+      });
+
+      if (bookedList.length === 0) {
+        // 空き枠
+        var div = document.createElement('div');
+        div.className = 'slot empty';
+        div.innerHTML =
+          '<div class="slot-header">' +
+            '<div class="slot-time">' + time + '</div>' +
+            '<div class="slot-name">空き</div>' +
+          '</div>';
+        list.appendChild(div);
+        return;
+      }
+
+      // 予約が1件以上ある場合はそれぞれカードを生成
+      bookedList.forEach(function(booked) {
+        var div = document.createElement('div');
+        div.className = 'slot';
+        var barClass = booked.status === '来院済み'    ? 'bar-arrived'
+                     : booked.status === '診察中'     ? 'bar-progress'
+                     : booked.status === '診察終了'   ? 'bar-done'
+                     : booked.status === 'キャンセル' ? 'bar-cancel' : 'bar-waiting';
+        var kindClass  = booked.visitKind === '健康診断・検診' ? 'kind-checkup' : 'kind-general';
+        var isLinked   = !!linkedRows[booked.row];
+        var linkedBadge = isLinked ? '<span style="font-size:10px;background:#E0E7FF;color:#3730A3;padding:1px 7px;border-radius:10px;font-weight:600;margin-left:6px;">連続枠</span>' : '';
+        var isFirstVisit = booked.visitHistory === '初めて受診する'
+          && booked.symptoms.indexOf('診療情報提供書あり') < 0
+          && booked.symptoms.indexOf('他院からの転院') < 0;
+        var firstVisitBadge = isFirstVisit ? '<span style="font-size:11px;background:#DC2626;color:#fff;padding:2px 9px;border-radius:10px;font-weight:700;margin-left:6px;">初診</span>' : '';
+        var hasReferral = booked.symptoms && booked.symptoms.indexOf('診療情報提供書あり') >= 0;
+        var hasTransfer = booked.symptoms && booked.symptoms.indexOf('他院からの転院') >= 0;
+        var referralBadge = hasReferral ? '<span style="font-size:11px;background:#DC2626;color:#fff;padding:2px 9px;border-radius:10px;font-weight:700;margin-left:6px;">紹介状あり</span>' : '';
+        var transferBadge = hasTransfer ? '<span style="font-size:11px;background:#DC2626;color:#fff;padding:2px 9px;border-radius:10px;font-weight:700;margin-left:6px;">転院</span>' : '';
+        var kanaDisp = booked.kana ? '<span style="font-size:12px;color:#6b7280;font-weight:400;margin-left:8px;letter-spacing:0.03em;">' + esc(booked.kana) + '</span>' : '';
+        div.innerHTML =
+          '<div class="slot-status-bar ' + barClass + '" id="bar-' + booked.row + '"></div>' +
+          '<div class="slot-header">' +
+            '<div class="slot-time">' + time + '</div>' +
+            '<div class="slot-name">' + esc(booked.name) + kanaDisp + firstVisitBadge + referralBadge + transferBadge + linkedBadge + '</div>' +
+            '<div class="slot-kind ' + kindClass + '">' + esc(booked.visitKind) + '</div>' +
+          '</div>' +
+          '<div class="slot-body">' +
+            '<div class="slot-info">' +
+              '📞 <span>' + esc(booked.tel) + '</span>　' +
+              '🩺 <span>' + esc(booked.symptoms || '未入力') + '</span>　' +
+              '🔖 <span>' + esc(booked.reserveNum) + '</span>' +
+            '</div>' +
+            '<div class="status-row">' +
+              '<button class="status-btn ' + (booked.status === '来院済み'   ? 'active-waiting'  : '') + '" data-row="' + booked.row + '" data-status="来院済み"   onclick="updateStatus(' + booked.row + ', \'来院済み\')">🔵 来院済み</button>' +
+              '<button class="status-btn ' + (booked.status === '診察中'     ? 'active-progress' : '') + '" data-row="' + booked.row + '" data-status="診察中"     onclick="updateStatus(' + booked.row + ', \'診察中\')">🟡 診察中</button>' +
+              '<button class="status-btn ' + (booked.status === '診察終了'   ? 'active-done'     : '') + '" data-row="' + booked.row + '" data-status="診察終了"   onclick="updateStatus(' + booked.row + ', \'診察終了\')">✅ 診察終了</button>' +
+              '<button class="status-btn ' + (booked.status === 'キャンセル' ? 'active-cancel'   : '') + '" data-row="' + booked.row + '" data-status="キャンセル" onclick="confirmCancel(' + booked.row + ')">❌ キャンセル</button>' +
+            '</div>' +
+            '<div class="memo-row">' +
+              '<textarea class="memo-input" id="memo-' + booked.row + '" placeholder="メモ（申し送り、参考URLなど）">' + esc(booked.memo) + '</textarea>' +
+              '<button class="memo-save" onclick="saveMemo(' + booked.row + ')">保存</button>' +
+            '</div>' +
+            '<div class="memo-saved" id="saved-' + booked.row + '"></div>' +
+            '<div id="memo-links-' + booked.row + '" style="font-size:12px;margin-top:4px;line-height:1.8;">' + linkify(booked.memo) + '</div>' +
+          '</div>';
+        // 次回予約ボタンをDOM APIで安全に追加
+        var nrBtn = document.createElement('button');
+        nrBtn.textContent = '📅 次回予約を取る';
+        nrBtn.style.cssText = 'margin-top:10px;width:100%;padding:8px;background:#F3EAF6;border:1px solid #D8C0E0;border-radius:8px;font-size:12px;font-weight:700;color:#5C2E6A;cursor:pointer;font-family:inherit;';
+        (function(b) {
+          nrBtn.addEventListener('click', function() { openNextBookingModal(b); });
+        })(booked);
+        div.querySelector('.slot-body').appendChild(nrBtn);
+        list.appendChild(div);
+      }); // end bookedList.forEach
+    }); // end allSlots.forEach
+  }
+
+  // 連続枠の紐付け { row: linkedRow } 両方向に登録
+  var linkedRows = {};
+
+  // ── キャンセル確認・取り消し ─────────────────────────
+  function confirmCancel(row) {
+    // 現在キャンセル中なら → 取り消し確認
+    var btns = document.querySelectorAll('[data-row="' + row + '"]');
+    var isCancelled = false;
+    btns.forEach(function(b) {
+      if (b.dataset.status === 'キャンセル' && b.classList.contains('active-cancel')) {
+        isCancelled = true;
+      }
+    });
+
+    if (isCancelled) {
+      if (confirm('キャンセルを取り消して「待機中」に戻しますか？')) {
+        updateStatus(row, '待機中');
+      }
+    } else {
+      if (confirm('この予約をキャンセルしますか？')) {
+        updateStatus(row, 'キャンセル');
+      }
+    }
+  }
+
+  // ── ステータス更新（即時UI反映→バックグラウンド保存）
+  function updateStatus(row, status) {
+    // 即座にUI更新（この行）
+    applyStatusUI(row, status);
+
+    // 連続枠があれば連動
+    if (linkedRows[row]) {
+      applyStatusUI(linkedRows[row], status);
+      var url2 = GAS_URL + '?action=updateStatus&row=' + linkedRows[row] + '&status=' + encodeURIComponent(status) + '&_=' + Date.now();
+      fetch(url2).catch(function() {});
+    }
+
+    // バックグラウンドでスプレッドシートに保存
+    var url = GAS_URL + '?action=updateStatus&row=' + row + '&status=' + encodeURIComponent(status) + '&_=' + Date.now();
+    fetch(url).catch(function() {});
+  }
+
+  function applyStatusUI(row, status) {
+    var btns = document.querySelectorAll('[data-row="' + row + '"]');
+    btns.forEach(function(b) {
+      b.classList.remove('active-waiting', 'active-progress', 'active-done', 'active-cancel');
+    });
+    var activeClass = status === '診察中'     ? 'active-progress'
+                    : status === '診察終了'   ? 'active-done'
+                    : status === 'キャンセル' ? 'active-cancel' : 'active-waiting';
+    btns.forEach(function(b) {
+      if (b.dataset.status === status) b.classList.add(activeClass);
+    });
+    var bar = document.getElementById('bar-' + row);
+    if (bar) {
+      bar.className = 'slot-status-bar ' +
+        (status === '来院済み'    ? 'bar-arrived'
+       : status === '診察中'     ? 'bar-progress'
+       : status === '診察終了'   ? 'bar-done'
+       : status === 'キャンセル' ? 'bar-cancel' : 'bar-waiting');
+    }
+  }
+
+  // ── メモ保存 ──────────────────────────────────────
+  function saveMemo(row) {
+    var memo = document.getElementById('memo-' + row).value;
+    var url  = GAS_URL + '?action=updateMemo&row=' + row + '&memo=' + encodeURIComponent(memo) + '&_=' + Date.now();
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success) {
+          var el = document.getElementById('saved-' + row);
+          el.textContent = '✓ 保存しました';
+          var linkEl = document.getElementById('memo-links-' + row);
+          if (linkEl) linkEl.innerHTML = linkify(memo);
+          setTimeout(function() { el.textContent = ''; }, 2000);
+        } else {
+          alert('保存に失敗しました: ' + JSON.stringify(data));
+        }
+      })
+      .catch(function(err) { alert('通信エラー: ' + err); });
+  }
+
+  // ── URLをリンクに変換（escより先に処理）─────────
+  function linkify(text) {
+    if (!text) return '';
+    // URLを一時プレースホルダーに置換してからescape
+    var urls = [];
+    var tmp = text.replace(/(https?:\/\/[^\s]+)/g, function(url) {
+      urls.push(url);
+      return '\x00' + (urls.length - 1) + '\x00';
+    });
+    var escaped = esc(tmp);
+    // プレースホルダーをリンクに戻す
+    escaped = escaped.replace(/\x00(\d+)\x00/g, function(_, i) {
+      var url = urls[parseInt(i)];
+      return '<a href="' + url + '" target="_blank" style="color:#E8772E;word-break:break-all;">' + url + '</a>';
+    });
+    return escaped;
+  }
+
+  // ── POST送信ヘルパー（未使用）────────────────────
+  function gasPost(params) {
+    var url = GAS_URL + '?action=' + encodeURIComponent(params.action);
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params)
+    }).then(function(r) { return r.json(); });
+  }
+
+  // ── HTMLエスケープ ────────────────────────────────
+  // ── 次回予約モーダル ──────────────────────────────────
+  var nrPatient   = null; // 現在モーダルで扱っている患者データ
+  var nrCurYear   = null;
+  var nrCurMonth  = null;
+  var nrSelDate   = null;
+  var nrSelTime   = null;
+
+  var NR_TODAY = new Date();
+  NR_TODAY.setHours(0,0,0,0);
+
+  // visitKindラベル→value変換
+  var KIND_LABEL_TO_VALUE = {
+    '一般内科診療':             'general',
+    '発熱など風邪症状での受診': 'fever',
+    '健康診断・検診':           'checkup',
+    '予防接種（インフルエンザ・新型コロナワクチン）': 'vaccine_flu',
+    '予防接種（その他ワクチン）': 'vaccine_other'
+  };
+
+  function openNextBookingModal(booked) {
+    nrPatient = {
+      row:          booked.row,
+      name:         booked.name         || '',
+      kana:         booked.kana         || '',
+      tel:          booked.tel          || '',
+      visitKind:    booked.visitKind    || '',
+      // 初診→次回は再診に変換
+      visitHistory: booked.visitHistory === '初めて受診する' ? '受診したことがある' : (booked.visitHistory || ''),
+      memo:         booked.memo         || '',
+      datetime:     booked.datetime     || ''
+    };
+    nrSelDate  = null;
+    nrSelTime  = null;
+    nrCurYear  = NR_TODAY.getFullYear();
+    nrCurMonth = NR_TODAY.getMonth();
+
+    document.getElementById('nrName').textContent = booked.name + (booked.kana ? '（' + booked.kana + '）' : '');
+    document.getElementById('nrPatientLabel').textContent = '前回：' + booked.datetime + '　' + booked.visitKind;
+
+    // 受診種別セレクト：前回と同じ種別をデフォルト
+    var sel = document.getElementById('nrVisitKind');
+    var val = KIND_LABEL_TO_VALUE[booked.visitKind] || 'general';
+    // vaccine系は選択肢にないのでgeneralにフォールバック
+    if (val === 'vaccine_flu' || val === 'vaccine_other') val = 'general';
+    sel.value = val;
+
+    document.getElementById('nrTimeSection').style.display = 'none';
+    document.getElementById('nrSelectedDisp').style.display = 'none';
+    document.getElementById('nrSubmitBtn').disabled = true;
+    document.getElementById('nrMsg').textContent = '';
+
+    nrRenderCalendar();
+    document.getElementById('nextBookingModal').classList.add('open');
+  }
+
+  function closeNextBookingModal() {
+    document.getElementById('nextBookingModal').classList.remove('open');
+    nrPatient = null;
+  }
+
+  function nrOnKindChange() {
+    nrSelDate = null; nrSelTime = null;
+    document.getElementById('nrTimeSection').style.display = 'none';
+    document.getElementById('nrSelectedDisp').style.display = 'none';
+    document.getElementById('nrSubmitBtn').disabled = true;
+    nrRenderCalendar();
+  }
+
+  function nrChangeMonth(dir) {
+    nrCurMonth += dir;
+    if (nrCurMonth < 0)  { nrCurMonth = 11; nrCurYear--; }
+    if (nrCurMonth > 11) { nrCurMonth = 0;  nrCurYear++; }
+    nrSelDate = null; nrSelTime = null;
+    document.getElementById('nrTimeSection').style.display = 'none';
+    document.getElementById('nrSelectedDisp').style.display = 'none';
+    document.getElementById('nrSubmitBtn').disabled = true;
+    nrRenderCalendar();
+  }
+
+  function nrIsBookable(dt, visitKind) {
+    if (dt < NR_TODAY) return false;
+    var dateKey = dt.getFullYear() + '/' + (dt.getMonth()+1) + '/' + dt.getDate();
+    var hType   = (typeof holidaySet !== 'undefined') ? (holidaySet[dateKey] || null) : null;
+    if (hType === '全日') return false;
+    // 検診は日曜不可
+    if (visitKind === 'checkup' && dt.getDay() === 0) return false;
+    return true;
+  }
+
+  function nrRenderCalendar() {
+    var visitKind = document.getElementById('nrVisitKind').value;
+    var mNames = ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+    document.getElementById('nrCalMonth').textContent = nrCurYear + '年 ' + mNames[nrCurMonth];
+    var grid  = document.getElementById('nrCalGrid');
+    grid.innerHTML = '';
+    ['日','月','火','水','木','金','土'].forEach(function(d) {
+      var el = document.createElement('div');
+      el.className = 'modal-cal-label';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+    var first = new Date(nrCurYear, nrCurMonth, 1).getDay();
+    var total = new Date(nrCurYear, nrCurMonth + 1, 0).getDate();
+    for (var i = 0; i < first; i++) {
+      var el = document.createElement('div'); el.className = 'modal-cal-day md-empty'; grid.appendChild(el);
+    }
+    for (var d = 1; d <= total; d++) {
+      var el   = document.createElement('div'); el.className = 'modal-cal-day';
+      var dt   = new Date(nrCurYear, nrCurMonth, d);
+      var dateKey = nrCurYear + '/' + (nrCurMonth+1) + '/' + d;
+      var isToday = (dt.getTime() === NR_TODAY.getTime());
+      if (isToday) el.classList.add('md-today');
+      el.textContent = d;
+
+      if (!nrIsBookable(dt, visitKind)) {
+        el.classList.add('md-disabled');
+      } else {
+        if (nrSelDate === dateKey) el.classList.add('md-selected');
+        el.onclick = (function(_d, _dt, _dk) {
+          return function() {
+            document.querySelectorAll('.modal-cal-day').forEach(function(c) { c.classList.remove('md-selected'); });
+            this.classList.add('md-selected');
+            nrSelDate = _dk;
+            nrSelTime = null;
+            document.getElementById('nrSubmitBtn').disabled = true;
+            document.getElementById('nrSelectedDisp').style.display = 'none';
+            nrShowTimeSlots(_dt, _dk);
+          };
+        })(d, dt, dateKey);
+      }
+      grid.appendChild(el);
+    }
+  }
+
+  function nrShowTimeSlots(dt, dateKey) {
+    var visitKind = document.getElementById('nrVisitKind').value;
+    var hType     = (typeof holidaySet !== 'undefined') ? (holidaySet[dateKey] || null) : null;
+    // シンプルなスロット生成（管理者相当：9:30〜）
+    var slots = [];
+    var dow = dt.getDay();
+    var month = dt.getMonth() + 1;
+    var isSun = (dow === 0);
+    var dowAdj = isSun ? 6 : dow;
+    var hasAM = false, hasPM = false;
+    if (visitKind === 'checkup') {
+      if (isSun) { slots = []; }
+      else {
+        if (hType !== '午前') hasAM = true;
+        if (hType !== '午後') hasPM = true;
+        if (hasAM) slots.push('09:15');
+        if (hasPM) slots.push('14:00');
+      }
+    } else {
+      if (month <= 4) {
+        if (dowAdj >= 1 && dowAdj <= 5) hasAM = true;
+        if (dowAdj === 6) hasPM = true;
+      } else if (month === 5) {
+        if (dowAdj === 1 || dowAdj === 3 || dowAdj === 4) { hasAM = true; hasPM = true; }
+        if (dowAdj === 2 || dowAdj === 5) hasAM = true;
+        if (dowAdj === 6) hasPM = true;
+      } else {
+        if (dowAdj >= 1 && dowAdj <= 5) { hasAM = true; hasPM = true; }
+        if (dowAdj === 6) hasPM = true;
+      }
+      if (hType === '午前') hasAM = false;
+      if (hType === '午後') hasPM = false;
+      if (hasAM) { for (var h=9; h<12; h++) for (var m=(h===9?30:0); m<60; m+=10) slots.push(pad2(h)+':'+pad2(m)); }
+      if (hasPM) { for (var h=14; h<17; h++) for (var m=(h===14?30:0); m<60; m+=10) slots.push(pad2(h)+':'+pad2(m)); }
+    }
+
+    var grid = document.getElementById('nrTimeGrid');
+    grid.innerHTML = '';
+    document.getElementById('nrTimeSection').style.display = slots.length ? 'block' : 'none';
+
+    slots.forEach(function(t) {
+      var btn  = document.createElement('button');
+      btn.className = 'modal-time-btn';
+      var dtKey = dateKey + ' ' + t;
+      var isFull = false; // 次回予約モーダルは管理者運用のため常に選択可
+      if (isFull) {
+        btn.classList.add('mt-full');
+        btn.textContent = t + '\n×';
+      } else {
+        btn.textContent = t;
+        btn.onclick = (function(_t) {
+          return function() {
+            document.querySelectorAll('.modal-time-btn').forEach(function(b) { b.classList.remove('mt-selected'); });
+            this.classList.add('mt-selected');
+            nrSelTime = _t;
+            document.getElementById('nrSelectedDisp').textContent = nrSelDate + ' ' + nrSelTime;
+            document.getElementById('nrSelectedDisp').style.display = 'block';
+            document.getElementById('nrSubmitBtn').disabled = false;
+          };
+        })(t);
+      }
+      grid.appendChild(btn);
+    });
+  }
+
+  function pad2(n) { return n < 10 ? '0' + n : String(n); }
+
+  function isSlotAvailableNR(dateKey, timeStr, visitKind) {
+    var dtKey = dateKey + ' ' + timeStr;
+    if (typeof bookedSet !== 'undefined' && bookedSet[dtKey]) return false;
+    return true;
+  }
+
+  function submitNextBooking() {
+    if (!nrSelDate || !nrSelTime || !nrPatient) return;
+    var visitKind = document.getElementById('nrVisitKind').value;
+    var kindLabels = {
+      general:  '一般内科診療',
+      fever:    '発熱など風邪症状での受診',
+      checkup:  '健康診断・検診'
+    };
+    var kindLabel = kindLabels[visitKind] || '一般内科診療';
+    var datetime  = nrSelDate + ' ' + nrSelTime;
+    var reserveNum = 'R' + String(Math.floor(100000 + Math.random() * 900000));
+
+    if (!confirm(nrPatient.name + ' 様\n' + datetime + '\n' + kindLabel + '\n\nこの内容で予約を確定しますか？')) return;
+
+    document.getElementById('nrSubmitBtn').disabled = true;
+    document.getElementById('nrSubmitBtn').textContent = '処理中...';
+
+    // メモ欄のURLを引き継ぐ（メモ欄のテキストからURL部分を抽出）
+    var memoEl = document.getElementById('memo-' + nrPatient.row);
+    var inheritMemo = memoEl ? memoEl.value : nrPatient.memo;
+    // URLのみ抽出
+    var urlMatch = inheritMemo.match(/https?:\/\/[^\s]+/);
+    var inheritedUrl = urlMatch ? urlMatch[0] : '';
+
+    var url = GAS_URL + '?action=book'
+      + '&datetime='    + encodeURIComponent(datetime)
+      + '&name='        + encodeURIComponent(nrPatient.name)
+      + '&kana='        + encodeURIComponent(nrPatient.kana || '')
+      + '&dob='         + encodeURIComponent('')
+      + '&tel='         + encodeURIComponent(nrPatient.tel || '')
+      + '&visitKind='   + encodeURIComponent(kindLabel)
+      + '&visitHistory='+ encodeURIComponent(nrPatient.visitHistory || '')
+      + '&symptoms='    + encodeURIComponent('')
+      + '&reserveNum='  + encodeURIComponent(reserveNum)
+      + '&_='           + Date.now();
+
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.success) {
+          // メモ（URL）を新しい予約行に保存
+          if (inheritedUrl) {
+            // 予約行を検索してメモを保存（少し待ってから）
+            setTimeout(function() {
+              var findUrl = GAS_URL + '?action=getSchedule&date=' + encodeURIComponent(nrSelDate) + '&_=' + Date.now();
+              fetch(findUrl).then(function(r) { return r.json(); }).then(function(d) {
+                var rows = d.rows || [];
+                for (var i = 0; i < rows.length; i++) {
+                  if (rows[i].reserveNum === reserveNum) {
+                    fetch(GAS_URL + '?action=updateMemo&row=' + rows[i].row + '&memo=' + encodeURIComponent(inheritedUrl) + '&_=' + Date.now());
+                    break;
+                  }
+                }
+              });
+            }, 1500);
+          }
+          alert('予約を確定しました。\n予約番号：' + reserveNum + '\n' + datetime);
+          closeNextBookingModal();
+          loadSchedule();
+        } else {
+          document.getElementById('nrMsg').textContent = data.message || '予約に失敗しました。';
+          document.getElementById('nrSubmitBtn').disabled = false;
+          document.getElementById('nrSubmitBtn').textContent = '予約を確定する';
+        }
+      })
+      .catch(function() {
+        document.getElementById('nrMsg').textContent = '通信エラーが発生しました。再度お試しください。';
+        document.getElementById('nrSubmitBtn').disabled = false;
+        document.getElementById('nrSubmitBtn').textContent = '予約を確定する';
+      });
+  }
+
+  function esc(str) {
+    return String(str)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  // ── タブ切り替え ──────────────────────────────────
+  function switchTab(tab) {
+    var isSchedule = (tab === 'schedule');
+    document.getElementById('panelSchedule').style.display = isSchedule ? 'block' : 'none';
+    document.getElementById('panelStats').style.display    = isSchedule ? 'none'  : 'block';
+
+    var tSch = document.getElementById('tabSchedule');
+    var tStt = document.getElementById('tabStats');
+    tSch.style.borderBottomColor = isSchedule ? '#E8772E' : 'transparent';
+    tSch.style.color             = isSchedule ? '#E8772E' : '#9ca3af';
+    tSch.style.fontWeight        = isSchedule ? '700'     : '600';
+    tStt.style.borderBottomColor = isSchedule ? 'transparent' : '#7B3F8C';
+    tStt.style.color             = isSchedule ? '#9ca3af' : '#7B3F8C';
+    tStt.style.fontWeight        = isSchedule ? '600'     : '700';
+
+    if (!isSchedule) { initStatsMonth(); loadStats(); }
+  }
+
+  // ── ワクチン集計 ──────────────────────────────────
+  var statsTargetYear  = null;
+  var statsTargetMonth = null;
+
+  function initStatsMonth() {
+    var now = new Date();
+    statsTargetYear  = now.getFullYear();
+    statsTargetMonth = now.getMonth() + 1; // 1〜12
+  }
+
+  function changeStatsMonth(dir) {
+    if (statsTargetYear === null) initStatsMonth();
+    statsTargetMonth += dir;
+    if (statsTargetMonth < 1)  { statsTargetMonth = 12; statsTargetYear--; }
+    if (statsTargetMonth > 12) { statsTargetMonth = 1;  statsTargetYear++; }
+    loadStats();
+  }
+
+  function loadStats() {
+    if (statsTargetYear === null) initStatsMonth();
+
+    var targetMonth = statsTargetYear + '-' + String(statsTargetMonth).padStart(2, '0');
+    document.getElementById('statsMonthLabel').textContent = statsTargetYear + '年' + statsTargetMonth + '月';
+    document.getElementById('statsContent').innerHTML =
+      '<div style="text-align:center;padding:2rem;color:#9ca3af;font-size:14px;">読み込み中...</div>';
+
+    var url = GAS_URL + '?action=getVaccineStats&targetMonth=' + encodeURIComponent(targetMonth) + '&_=' + Date.now();
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) { renderStats(data); })
+      .catch(function() {
+        document.getElementById('statsContent').innerHTML =
+          '<div style="text-align:center;padding:2rem;color:#dc2626;font-size:14px;">読み込みに失敗しました。再度お試しください。</div>';
+      });
+  }
+
+  function renderStats(data) {
+    var c = data.counts;
+    var html = '';
+
+    // 表示順：今週の残り→今月の残り→今週の総件数→今月の総件数
+    var sections = [];
+    if (data.isCurrentMonth) {
+      sections.push({ key: 'weekRemain',  label: '今週の残り件数',  period: data.weekRemainLabel,  badge: '#3B82F6' });
+      sections.push({ key: 'monthRemain', label: '今月の残り件数',  period: data.monthRemainLabel, badge: '#7B3F8C' });
+    }
+    sections.push({ key: 'week',  label: '今週の総予約件数', period: data.weekLabel,  badge: '#94a3b8' });
+    sections.push({ key: 'month', label: data.monthLabel + 'の総予約件数', period: data.monthLabel, badge: '#94a3b8' });
+
+    sections.forEach(function(sec) {
+      var d = c[sec.key];
+      if (!d) return;
+      var otherEntries = Object.keys(d.other || {}).sort();
+      var otherTotal   = otherEntries.reduce(function(s, k) { return s + d.other[k]; }, 0);
+      var total = d.influ_general + d.influ_young + d.corona_general + d.corona_young + otherTotal;
+
+      html += '<div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:1.25rem;margin-bottom:1rem;">';
+      html += '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px;">';
+      html += '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + sec.badge + ';flex-shrink:0;margin-top:2px;"></span>';
+      html += '<div style="font-size:15px;font-weight:700;color:#111;">' + sec.label + '</div>';
+      html += '<div style="font-size:12px;color:#9ca3af;">' + esc(sec.period) + '</div>';
+      html += '<div style="margin-left:auto;font-size:13px;font-weight:700;color:#374151;">合計 <span style="font-size:20px;color:#E8722E;">' + total + '</span> 件</div>';
+      html += '</div>';
+
+      html += '<table style="width:100%;border-collapse:collapse;font-size:13px;">';
+      html += '<thead><tr style="background:#F1F5F9;">';
+      html += '<th style="padding:8px 12px;text-align:left;border:1px solid #e5e7eb;color:#475569;font-weight:700;">ワクチン種類</th>';
+      html += '<th style="padding:8px 12px;text-align:center;border:1px solid #e5e7eb;color:#475569;font-weight:700;width:80px;">件数</th>';
+      html += '</tr></thead><tbody>';
+
+      var fluCoronaRows = [
+        { label: 'インフルエンザ（3歳以上）',    val: d.influ_general,  color: '#3B82F6' },
+        { label: 'インフルエンザ（2歳以下）',    val: d.influ_young,    color: '#60A5FA' },
+        { label: '新型コロナワクチン（5歳以上）', val: d.corona_general, color: '#7B3F8C' },
+        { label: '新型コロナワクチン（4歳以下）', val: d.corona_young,   color: '#A78BFA' }
+      ];
+      fluCoronaRows.forEach(function(row, idx) {
+        var bg = idx % 2 === 0 ? '#fff' : '#FAFAFA';
+        html += '<tr style="background:' + bg + ';">';
+        html += '<td style="padding:10px 12px;border:1px solid #e5e7eb;">';
+        html += '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + row.color + ';margin-right:8px;vertical-align:middle;"></span>';
+        html += esc(row.label) + '</td>';
+        html += '<td style="padding:10px 12px;border:1px solid #e5e7eb;text-align:center;font-weight:700;font-size:16px;color:#111;">' + row.val + '</td>';
+        html += '</tr>';
+      });
+
+      if (otherEntries.length > 0) {
+        html += '<tr style="background:#FFF8F0;"><td colspan="2" style="padding:8px 12px;border:1px solid #e5e7eb;font-weight:700;color:#C45818;font-size:12px;">予防接種（その他ワクチン）</td></tr>';
+        otherEntries.forEach(function(name, idx) {
+          var bg = idx % 2 === 0 ? '#fff' : '#FAFAFA';
+          html += '<tr style="background:' + bg + ';">';
+          html += '<td style="padding:10px 12px 10px 24px;border:1px solid #e5e7eb;">';
+          html += '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#F97316;margin-right:8px;vertical-align:middle;"></span>';
+          html += esc(name) + '</td>';
+          html += '<td style="padding:10px 12px;border:1px solid #e5e7eb;text-align:center;font-weight:700;font-size:16px;color:#111;">' + d.other[name] + '</td>';
+          html += '</tr>';
+        });
+      } else {
+        html += '<tr style="background:#fff;"><td colspan="2" style="padding:8px 12px 8px 24px;border:1px solid #e5e7eb;color:#9ca3af;font-size:12px;">予防接種（その他ワクチン）: 0件</td></tr>';
+      }
+
+      html += '</tbody></table></div>';
+    });
+
+    html += '<div style="font-size:11px;color:#9ca3af;text-align:right;margin-top:4px;">※ キャンセルを除いた件数です</div>';
+    document.getElementById('statsContent').innerHTML = html;
+  }
+
+
+</script>
+</body>
+</html>
